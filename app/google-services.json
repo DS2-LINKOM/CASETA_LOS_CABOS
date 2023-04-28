@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "127018650903",
+    "project_id": "loscabos-8ac87",
+    "storage_bucket": "loscabos-8ac87.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127018650903:android:89973c8169a0aedd88fb52",
+        "android_client_info": {
+          "package_name": "mx.linkom.caseta_los_cabos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127018650903-ntjqgm2shk4p6058kimaobvvpiu6a9ig.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy91i4UFnUGESTowDA9NgQxF5gRZf5zD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127018650903-ntjqgm2shk4p6058kimaobvvpiu6a9ig.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
