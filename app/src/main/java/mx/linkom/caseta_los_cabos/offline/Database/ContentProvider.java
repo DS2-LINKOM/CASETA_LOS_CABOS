@@ -48,7 +48,7 @@ public class ContentProvider extends android.content.ContentProvider {
 
 
 
-    public static final String AUTORIDAD = "mx.linkom.caseta_dm_offline";
+    public static final String AUTORIDAD = "mx.linkom.caseta_los_cabos";
 
     //Static inicializer, se ejecuta la primera vez que algo es llamado desde la clase
     static {

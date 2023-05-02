@@ -4,7 +4,7 @@ import android.net.Uri;
 
 public class UrisContentProvider {
 
-    public static final String CONTENT_AUTHORITY = "mx.linkom.caseta_dm_offline";
+    public static final String CONTENT_AUTHORITY = "mx.linkom.caseta_los_cabos";
 
     public static final Uri URI_BASE = Uri.parse("content://"+CONTENT_AUTHORITY);
 

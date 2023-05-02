@@ -108,7 +108,7 @@ public class testInternet extends Service {
         getSystemService(NotificationManager.class).createNotificationChannel(channel);
         Notification.Builder notification = new Notification.Builder(this, CHANNELID)
                 .setContentText("Servicio necesario para funcionalidad en offline.")
-                .setContentTitle("Demo caseta")
+                .setContentTitle("Community Cabo")
                 .setSmallIcon(R.drawable.caseta_logo);
 
         //Llama el inicio del servicio en primer plano
