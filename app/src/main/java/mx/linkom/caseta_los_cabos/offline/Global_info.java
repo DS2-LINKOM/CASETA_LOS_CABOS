@@ -14,7 +14,7 @@ public class Global_info extends Application {
     private static String TEXTO2_IMAGENES = "Fotografía pendiente por subir";
     private static String TEXTO3_IMAGENES = "Fotografía no disponible en offline";
     //private static String URL = "http://192.168.0.110/android/demoCaseta/";
-    private static String URL = "https://demoarboledas.privadaarboledas.net/plataforma/casetaV2/controlador/CC/off-line/";
+    private static String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/off-line/";
 
     public static String getTexto3Imagenes() {
         return TEXTO3_IMAGENES;

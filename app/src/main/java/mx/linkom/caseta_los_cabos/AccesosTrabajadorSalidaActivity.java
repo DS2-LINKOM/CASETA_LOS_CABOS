@@ -76,7 +76,7 @@ public class AccesosTrabajadorSalidaActivity extends mx.linkom.caseta_los_cabos.
     }
     public void Trabajador(){
 
-        String url = "https://demoarboledas.privadaarboledas.net/plataforma/casetaV2/controlador/CC/tbj_php1.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
+        String url = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/tbj_php1.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -118,7 +118,7 @@ public class AccesosTrabajadorSalidaActivity extends mx.linkom.caseta_los_cabos.
 
 
     public void Dtl(final String id_traba){
-        String url = "https://demoarboledas.privadaarboledas.net/plataforma/casetaV2/controlador/CC/tbj_php2.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
+        String url = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/tbj_php2.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
@@ -160,7 +160,7 @@ public class AccesosTrabajadorSalidaActivity extends mx.linkom.caseta_los_cabos.
 
     public void Lugar(){
 
-        String url = "https://demoarboledas.privadaarboledas.net/plataforma/casetaV2/controlador/CC/tbj_php5.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
+        String url = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/tbj_php5.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -297,7 +297,7 @@ public class AccesosTrabajadorSalidaActivity extends mx.linkom.caseta_los_cabos.
     public void Registrar(){
 
 
-        String url = "https://demoarboledas.privadaarboledas.net/plataforma/casetaV2/controlador/CC/tbj_php4.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
+        String url = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/tbj_php4.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
