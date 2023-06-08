@@ -75,8 +75,8 @@ public class TicketImprimirActivity extends mx.linkom.caseta_los_cabos.Menu {
     String tipo;
     Button regresar,imprimir;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +89,7 @@ public class TicketImprimirActivity extends mx.linkom.caseta_los_cabos.Menu {
 
         Conf = new Configuracion(this);
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetTicketImprimir);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetTicketImprimir);
 
         if (Global_info.getINTERNET().equals("Si")){
             iconoInternet.setImageResource(R.drawable.ic_online);
@@ -122,13 +122,15 @@ public class TicketImprimirActivity extends mx.linkom.caseta_los_cabos.Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
 
-        if (Offline){
+        Visita();
+
+        /*if (Offline){
             VisitaOffline();
         }else {
             Visita();
-        }
+        }*/
 
         regresar.setOnClickListener(new View.OnClickListener() {
             @Override

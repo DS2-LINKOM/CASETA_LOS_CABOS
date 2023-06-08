@@ -54,12 +54,12 @@
                         android:textColor="@color/fontColorBlanco"
                         android:textSize="@dimen/fontSizeEncabezados" />
 
-                    <ImageView
+                    <!--<ImageView
                         android:id="@+id/iconoInternetAccesosMultiples"
                         android:layout_width="44dp"
                         android:layout_height="28dp"
                         android:layout_alignParentEnd="true"
-                        app:srcCompat="@drawable/ic_offline" />
+                        app:srcCompat="@drawable/ic_offline" />-->
                 </RelativeLayout>
 
 

@@ -23,8 +23,8 @@ public class Rondines  extends mx.linkom.caseta_los_cabos.Menu{
     ViewPager viewPager;
     PagerControlador pagerAdapter;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +38,7 @@ public class Rondines  extends mx.linkom.caseta_los_cabos.Menu{
 
         tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
-        iconoInternet = (ImageView)findViewById(R.id.iconoInternetRondines);
+        /*iconoInternet = (ImageView)findViewById(R.id.iconoInternetRondines);
 
         if (Global_info.getINTERNET().equals("Si")){
             //Es online
@@ -73,7 +73,7 @@ public class Rondines  extends mx.linkom.caseta_los_cabos.Menu{
                             }).create().show();
                 }
             }
-        });
+        });*/
 
         pagerAdapter=new PagerControlador(getSupportFragmentManager(),tablayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);

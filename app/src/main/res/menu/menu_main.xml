@@ -40,7 +40,7 @@
     <item
         android:id="@+id/Versión"
         android:icon="@drawable/ic_info"
-        android:title="Linkom © v.24.24.37"
+        android:title="Linkom © v.24.25.37"
         app:showAsAction="ifRoom"
         />
 

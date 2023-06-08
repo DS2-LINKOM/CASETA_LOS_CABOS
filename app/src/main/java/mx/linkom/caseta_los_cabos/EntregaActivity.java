@@ -74,8 +74,8 @@ public class EntregaActivity extends mx.linkom.caseta_los_cabos.Menu {
     String fotos;
     Uri uri_img;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
     TextView txtFoto;
 
     String rutaImagen1, nombreImagen1;
@@ -104,13 +104,13 @@ public class EntregaActivity extends mx.linkom.caseta_los_cabos.Menu {
         espacio2 = (LinearLayout) findViewById(R.id.espacio2);
         BtnReg = (LinearLayout) findViewById(R.id.BtnReg);
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetEntrega);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetEntrega);*/
         //resp_foto = (TextView) findViewById(R.id.resp_foto_entrega);
         txtFoto = (TextView) findViewById(R.id.txtFotoEntrega);
 
         txtFoto.setText(Global_info.getTexto1Imagenes());
 
-        if (Global_info.getINTERNET().equals("Si")){
+        /*if (Global_info.getINTERNET().equals("Si")){
             iconoInternet.setImageResource(R.drawable.ic_online);
             Offline = false;
         }else {
@@ -141,18 +141,18 @@ public class EntregaActivity extends mx.linkom.caseta_los_cabos.Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
 
         pd= new ProgressDialog(this);
         pd.setMessage("Registrando...");
 
+        check();
 
-
-        if (Offline){
+        /*if (Offline){
             checkOffline();
         }else {
             check();
-        }
+        }*/
 
         foto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,12 +237,14 @@ public class EntregaActivity extends mx.linkom.caseta_los_cabos.Menu {
     }
 
     public void check() {
+        Log.e("Correspondencia", "Método check");
         String url = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/correspondencia_5.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
+                Log.e("Correspondencia", response);
                 response = response.replace("][",",");
                 if (response.length()>0){
                     try {
@@ -298,6 +300,8 @@ public class EntregaActivity extends mx.linkom.caseta_los_cabos.Menu {
     }
 
     public void check2() {
+        Log.e("Correspondencia", "Método check2");
+
         String url = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/correspondencia_6.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -305,6 +309,7 @@ public class EntregaActivity extends mx.linkom.caseta_los_cabos.Menu {
 
             @Override
             public void onResponse(String response) {
+                Log.e("Correspondencia", response);
                 response = response.replace("][",",");
                 if (response.length()>0){
                     try {
@@ -342,20 +347,52 @@ public class EntregaActivity extends mx.linkom.caseta_los_cabos.Menu {
 
 
     public void ValidarQR(){
+        Log.e("Correspondencia", "Método validar QR");
         try {
             rlVista.setVisibility(View.GONE);
             rlPermitido.setVisibility(View.VISIBLE);
 
-            if (!ja1.getString(13).isEmpty()){
+            setNumero.setText(ja1.getString(0));
+
+            /*if (!ja1.getString(13).isEmpty()){
                 setNumero.setText(ja1.getString(0)+"-"+ja1.getString(13));
             }else{
                 setNumero.setText(ja1.getString(0));
-            }
+            }*/
 
+            Log.e("Correspondencia", ja2.getString(0));
+            Log.e("Correspondencia", ja1.getString(6));
             setPara.setText(ja2.getString(0));
             setComent.setText(ja1.getString(6));
 
-            if (!Offline){
+            storageReference.child(Conf.getPin()+"/correspondencia/"+ja1.getString(7))
+                    .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                        @Override
+
+                        public void onSuccess(Uri uri) {
+
+                            Glide.with(EntregaActivity.this)
+                                    .load(uri)
+                                    .error(R.drawable.log)
+                                    .centerInside()
+                                    .into(foto_recep);
+
+                            txtFoto.setVisibility(android.view.View.GONE);
+                            foto_recep.setVisibility(android.view.View.VISIBLE);
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Log.e("TAG","Error123: " + exception);
+
+                            txtFoto.setText(Global_info.getTexto2Imagenes());
+
+                        }
+                    });
+
+            /*if (!Offline){
                 storageReference.child(Conf.getPin()+"/correspondencia/"+ja1.getString(7))
                         .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
 
@@ -382,7 +419,7 @@ public class EntregaActivity extends mx.linkom.caseta_los_cabos.Menu {
 
                             }
                         });
-            }
+            }*/
 
 
 
@@ -458,6 +495,7 @@ public class EntregaActivity extends mx.linkom.caseta_los_cabos.Menu {
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -516,12 +554,15 @@ public class EntregaActivity extends mx.linkom.caseta_los_cabos.Menu {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     public void onClick(DialogInterface dialog, int id) {
 
-                        if (Offline){
+                        pd.show();
+                        Registrar();
+
+                        /*if (Offline){
                             RegistrarOffline();
                         }else {
                             pd.show();
                             Registrar();
-                        }
+                        }*/
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -779,13 +820,18 @@ public class EntregaActivity extends mx.linkom.caseta_los_cabos.Menu {
                 .setMessage("Entrega Exitosa")
                 .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (!Offline){
+                        if (!servicioFotos()){
+                            Intent cargarFotos = new Intent(EntregaActivity.this, subirFotos.class);
+                            startService(cargarFotos);
+                        }
+
+                        /*if (!Offline){
                             //Solo ejecutar si el servicio no se esta ejecutando
                             if (!servicioFotos()){
                                 Intent cargarFotos = new Intent(EntregaActivity.this, subirFotos.class);
                                 startService(cargarFotos);
                             }
-                        }
+                        }*/
 
                         Intent i = new Intent(getApplicationContext(), CorrespondenciaActivity.class);
                         startActivity(i);

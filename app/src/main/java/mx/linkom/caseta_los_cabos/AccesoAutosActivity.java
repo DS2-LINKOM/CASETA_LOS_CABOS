@@ -80,8 +80,8 @@ public class AccesoAutosActivity extends mx.linkom.caseta_los_cabos.Menu {
     Uri uri_img,uri_img2,uri_img3;
     TextView dato;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
     String nombreImagen1, nombreImagen2, nombreImagen3, rutaImagen1, rutaImagen2, rutaImagen3;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -147,7 +147,7 @@ public class AccesoAutosActivity extends mx.linkom.caseta_los_cabos.Menu {
 
         dato = (TextView) findViewById(R.id.placas_texto);
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetAutoAccesos);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetAutoAccesos);
 
         if (Global_info.getINTERNET().equals("Si")){
             iconoInternet.setImageResource(R.drawable.ic_online);
@@ -180,18 +180,21 @@ public class AccesoAutosActivity extends mx.linkom.caseta_los_cabos.Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
 
         //SI ES ACEPTADO O DENEGAODO
         if(Conf.getST().equals("Aceptado")){
             rlVista.setVisibility(View.VISIBLE);
             rlPermitido.setVisibility(View.GONE);
             rlDenegado.setVisibility(View.GONE);
-            if (Offline){
+
+            menu();
+
+            /*if (Offline){
                 menuOffline();
             }else {
                 menu();
-            }
+            }*/
         }else if(Conf.getST().equals("Denegado")){
             rlDenegado.setVisibility(View.VISIBLE);
             rlVista.setVisibility(View.GONE);
@@ -1183,12 +1186,15 @@ public class AccesoAutosActivity extends mx.linkom.caseta_los_cabos.Menu {
                 .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     public void onClick(DialogInterface dialog, int id) {
-                        if (Offline){
+                        pd.show();
+                        Registrar();
+
+                        /*if (Offline){
                             RegistrarOffline();
                         }else {
                             pd.show();
                             Registrar();
-                        }
+                        }*/
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

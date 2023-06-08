@@ -55,8 +55,8 @@ public class EntradasQrActivity extends mx.linkom.caseta_los_cabos.Menu {
     EditText Placas;
     Button Registro,Registro2;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
 
     LinearLayout LayoutBtnPlaca, FotoPlacaView;
     Button btnFotoPlaca;
@@ -84,7 +84,7 @@ public class EntradasQrActivity extends mx.linkom.caseta_los_cabos.Menu {
         btnFotoPlaca = (Button) findViewById(R.id.btnFotoPlaca);
         viewPlaca = (ImageView) findViewById(R.id.viewPlaca);
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetEntradasQr);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetEntradasQr);
 
         if (Global_info.getINTERNET().equals("Si")){
             iconoInternet.setImageResource(R.drawable.ic_online);
@@ -117,7 +117,7 @@ public class EntradasQrActivity extends mx.linkom.caseta_los_cabos.Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
 
         try {
             objectDetectorClass = new objectDetectorClass(getAssets(), "detectPlacaLKM.tflite", "labelmapTf.txt", 320);
@@ -128,20 +128,25 @@ public class EntradasQrActivity extends mx.linkom.caseta_los_cabos.Menu {
             Log.e("MainActivity", "Error al cargar modelo");
         }
 
-        if (Offline){
+        menu();
+
+        /*if (Offline){
             menuOffline();
         }else {
             menu();
-        }
+        }*/
 
         Registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Offline){
+
+                placas();
+
+                /*if (Offline){
                     placasOffline();
                 }else {
                     placas();
-                }
+                }*/
             }
         });
         Placas.setFilters(new InputFilter[]{filter, new InputFilter.AllCaps() {
@@ -151,11 +156,14 @@ public class EntradasQrActivity extends mx.linkom.caseta_los_cabos.Menu {
         Registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Offline){
+
+                placas();
+
+                /*if (Offline){
                     placasOffline();
                 }else {
                     placas();
-                }
+                }*/
             }});
 
         Registro2.setOnClickListener(new View.OnClickListener() {
@@ -542,6 +550,7 @@ public class EntradasQrActivity extends mx.linkom.caseta_los_cabos.Menu {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

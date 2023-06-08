@@ -100,8 +100,8 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
     LinearLayout Numero_o;
     EditText Comentarios;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
     String rutaImagen1, rutaImagen2, rutaImagen3, rutaImagenPlaca = "", nombreImagen1, nombreImagen2, nombreImagen3, nombreImagenPlaca = "";
 
     LinearLayout espacio1Placa, FotoPlaca, espacioPlaca, FotoPlacaView, espacio2Placa;
@@ -192,7 +192,7 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
         viewPlaca = (ImageView) findViewById(R.id.viewPlaca);
         espacio2Placa = (LinearLayout) findViewById(R.id.espacio2Placa);
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetAccesosRegistro);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetAccesosRegistro);
 
         if (Global_info.getINTERNET().equals("Si")) {
             iconoInternet.setImageResource(R.drawable.ic_online);
@@ -225,7 +225,7 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
 
         Intent intent = getIntent();
         nombreImagenPlaca = intent.getStringExtra("nombreFotoPlaca");
@@ -239,13 +239,16 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
 
 
         cargarSpinner2();
-        if (Offline) {
+        calles();
+        menu();
+
+        /*if (Offline) {
             callesOffline();
             menuOffline();
         } else {
             calles();
             menu();
-        }
+        }*/
 
         pd = new ProgressDialog(this);
         pd.setMessage("Registrando...");
@@ -682,6 +685,7 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -981,11 +985,13 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
                     } else {
                         numero.clear();
                         registrar5.setVisibility(View.GONE);
-                        if (Offline) {
+                        numeros(Calle.getSelectedItem().toString());
+
+                        /*if (Offline) {
                             numerosOffline(Calle.getSelectedItem().toString());
                         } else {
                             numeros(Calle.getSelectedItem().toString());
-                        }
+                        }*/
 
                     }
 
@@ -1281,7 +1287,14 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     public void onClick(DialogInterface dialog, int id) {
                         //busqueda();
-                        if (Offline) {
+                        pd.show();
+                        try {
+                            registro();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        /*if (Offline) {
                             busquedaOffline();
                         } else {
                             pd.show();
@@ -1290,7 +1303,7 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                        }
+                        }*/
                     }
                 }).create().show();
     }
@@ -2197,13 +2210,18 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        if (!Offline) {
+                        if (!servicioFotos()) {
+                            Intent cargarFotos = new Intent(AccesoRegistroActivity.this, subirFotos.class);
+                            startService(cargarFotos);
+                        }
+
+                        /*if (!Offline) {
                             //Solo ejecutar si el servicio no se esta ejecutando
                             if (!servicioFotos()) {
                                 Intent cargarFotos = new Intent(AccesoRegistroActivity.this, subirFotos.class);
                                 startService(cargarFotos);
                             }
-                        }
+                        }*/
 
                         if (Integer.parseInt(Conf.getTicketE()) == 1) {
                             Imprimir();

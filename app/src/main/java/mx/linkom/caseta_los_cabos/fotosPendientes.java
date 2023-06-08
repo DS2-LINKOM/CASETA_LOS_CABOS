@@ -27,9 +27,10 @@ public class fotosPendientes extends AppCompatActivity {
     TextView txtCantidadFotos;
     int cantidadFotos = 0;
     Button btnActualizarCantidad, btnSubirFotos;
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +41,7 @@ public class fotosPendientes extends AppCompatActivity {
 
         txtCantidadFotos.setText(""+cantidadFotosLocal());
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetFotosPendientes);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetFotosPendientes);
 
         if (Global_info.getINTERNET().equals("Si")){
             iconoInternet.setImageResource(R.drawable.ic_online);
@@ -73,7 +74,7 @@ public class fotosPendientes extends AppCompatActivity {
                             }).create().show();
                 }
             }
-        });
+        });*/
 
         btnSubirFotos.setOnClickListener(new View.OnClickListener() {
             @Override

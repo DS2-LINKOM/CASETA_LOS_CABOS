@@ -33,8 +33,8 @@ public class CorrespondenciaActivity extends mx.linkom.caseta_los_cabos.Menu {
 
     private GridView gridList;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class CorrespondenciaActivity extends mx.linkom.caseta_los_cabos.Menu {
         Conf = new Configuracion(this);
         gridList = (GridView)findViewById(R.id.gridList);
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetCorrespondencia);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetCorrespondencia);
 
         if (Global_info.getINTERNET().equals("Si")){
             iconoInternet.setImageResource(R.drawable.ic_online);
@@ -52,11 +52,11 @@ public class CorrespondenciaActivity extends mx.linkom.caseta_los_cabos.Menu {
         }else {
             iconoInternet.setImageResource(R.drawable.ic_offline);
             Offline = true;
-        }
+        }*/
 
         llenado();
 
-        iconoInternet.setOnClickListener(new View.OnClickListener() {
+        /*iconoInternet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Offline){
@@ -79,7 +79,7 @@ public class CorrespondenciaActivity extends mx.linkom.caseta_los_cabos.Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
 
     }
 

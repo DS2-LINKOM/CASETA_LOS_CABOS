@@ -98,8 +98,8 @@ public class PreEntradasActivity extends mx.linkom.caseta_los_cabos.Menu {
     Uri uri_img,uri_img2,uri_img3;
     EditText Comentarios;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
     String rutaImagen1, rutaImagen2, rutaImagen3, rutaImagenPlaca="", nombreImagen1, nombreImagen2, nombreImagen3, nombreImagenPlaca="";
 
     LinearLayout espacio1Placa, FotoPlaca, espacioPlaca, FotoPlacaView, espacio2Placa;
@@ -193,7 +193,7 @@ public class PreEntradasActivity extends mx.linkom.caseta_los_cabos.Menu {
         viewPlaca = (ImageView) findViewById(R.id.viewPlaca);
         espacio2Placa = (LinearLayout) findViewById(R.id.espacio2Placa);
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetPreentradas);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetPreentradas);
 
         if (Global_info.getINTERNET().equals("Si")){
             iconoInternet.setImageResource(R.drawable.ic_online);
@@ -226,7 +226,7 @@ public class PreEntradasActivity extends mx.linkom.caseta_los_cabos.Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
 
         Intent intent = getIntent();
         nombreImagenPlaca = intent.getStringExtra("nombreFotoPlaca");
@@ -241,13 +241,16 @@ public class PreEntradasActivity extends mx.linkom.caseta_los_cabos.Menu {
         Log.e("ACTIVITY", "PreEntradas");
 
         cargarSpinner2();
-        if (Offline){
+        calles();
+        menu();
+
+        /*if (Offline){
             callesOffline();
             menuOffline();
         }else {
             calles();
             menu();
-        }
+        }*/
        // Visita();
 
         pd= new ProgressDialog(this);
@@ -640,6 +643,7 @@ public class PreEntradasActivity extends mx.linkom.caseta_los_cabos.Menu {
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -670,6 +674,7 @@ public class PreEntradasActivity extends mx.linkom.caseta_los_cabos.Menu {
                     bitmap = BitmapFactory.decodeFile(getApplicationContext().getExternalFilesDir(null) + "/preentradas1.png");
                 }*/
 
+                txtFoto1.setVisibility(View.GONE);
                 view1.setVisibility(View.VISIBLE);
                 view1.setImageBitmap(bitmap);
                 fotos1=1;
@@ -700,6 +705,7 @@ public class PreEntradasActivity extends mx.linkom.caseta_los_cabos.Menu {
                     bitmap2 = BitmapFactory.decodeFile(getApplicationContext().getExternalFilesDir(null) + "/preentradas2.png");
                 }*/
 
+                txtFoto2.setVisibility(View.GONE);
                 view2.setVisibility(View.VISIBLE);
                 view2.setImageBitmap(bitmap2);
                 fotos2=1;
@@ -733,6 +739,7 @@ public class PreEntradasActivity extends mx.linkom.caseta_los_cabos.Menu {
                     bitmap3 = BitmapFactory.decodeFile(getApplicationContext().getExternalFilesDir(null) + "/preentradas3.png");
                 }*/
 
+                txtFoto3.setVisibility(View.GONE);
                 view3.setVisibility(View.VISIBLE);
                 view3.setImageBitmap(bitmap3);
                 fotos3=1;
@@ -876,11 +883,13 @@ public class PreEntradasActivity extends mx.linkom.caseta_los_cabos.Menu {
                     }
                     else{
                         numero.clear();
-                        if (Offline){
+                        numeros(Calle.getSelectedItem().toString());
+
+                        /*if (Offline){
                             numerosOffline(Calle.getSelectedItem().toString());
                         }else {
                             numeros(Calle.getSelectedItem().toString());
-                        }
+                        }*/
                     }
 
                 }
@@ -1381,9 +1390,74 @@ public class PreEntradasActivity extends mx.linkom.caseta_los_cabos.Menu {
                 prove.setChecked(false);
             }
 
-            Log.e("OFFLINE", "Es: "+Offline);
+            storageReference.child(Conf.getPin()+"/caseta/"+ja6.getString(11))
+                    .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
 
-            if (Offline){
+                        @Override
+
+                        public void onSuccess(Uri uri) {
+                            Glide.with(PreEntradasActivity.this)
+                                    .load(uri)
+                                    .error(R.drawable.log)
+                                    .centerInside()
+                                    .into(view1);
+
+                            txtFoto1.setVisibility(View.GONE);
+                            view1.setVisibility(View.VISIBLE);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            txtFoto1.setText(Global_info.getTexto2Imagenes());
+                            // Handle any errors
+                        }
+                    });
+
+            storageReference.child(Conf.getPin()+"/caseta/"+ja6.getString(12))
+                    .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                        @Override
+
+                        public void onSuccess(Uri uri) {
+                            Glide.with(PreEntradasActivity.this)
+                                    .load(uri)
+                                    .error(R.drawable.log)
+                                    .centerInside()
+                                    .into(view2);
+                            txtFoto2.setVisibility(View.GONE);
+                            view2.setVisibility(View.VISIBLE);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            txtFoto2.setText(Global_info.getTexto2Imagenes());
+                            // Handle any errors
+                        }
+                    });
+
+            storageReference.child(Conf.getPin()+"/caseta/"+ja6.getString(13))
+                    .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                        @Override
+
+                        public void onSuccess(Uri uri) {
+                            Glide.with(PreEntradasActivity.this)
+                                    .load(uri)
+                                    .error(R.drawable.log)
+                                    .centerInside()
+                                    .into(view3);
+                            txtFoto3.setVisibility(View.GONE);
+                            view3.setVisibility(View.VISIBLE);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            txtFoto3.setText(Global_info.getTexto2Imagenes());
+                            // Handle any errors
+                        }
+                    });
+
+            /*if (Offline){
                 txtFoto1.setText(Global_info.getTexto3Imagenes());
                 txtFoto2.setText(Global_info.getTexto3Imagenes());
                 txtFoto3.setText(Global_info.getTexto3Imagenes());
@@ -1454,7 +1528,7 @@ public class PreEntradasActivity extends mx.linkom.caseta_los_cabos.Menu {
                                 // Handle any errors
                             }
                         });
-            }
+            }*/
 
 
 
@@ -1473,7 +1547,15 @@ public class PreEntradasActivity extends mx.linkom.caseta_los_cabos.Menu {
                 .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     public void onClick(DialogInterface dialog, int id) {
-                        if (Offline){
+
+                        try {
+                            pd.show();
+                            busqueda();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        /*if (Offline){
                             busquedaOffline();
                         }else {
                             try {
@@ -1482,7 +1564,7 @@ public class PreEntradasActivity extends mx.linkom.caseta_los_cabos.Menu {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                        }
+                        }*/
                     }
                 }).create().show();
     }
@@ -2305,13 +2387,19 @@ public class PreEntradasActivity extends mx.linkom.caseta_los_cabos.Menu {
                 .setMessage("Entrada de Visita Exitosa")
                 .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (!Offline){
+
+                        if (!servicioFotos()){
+                            Intent cargarFotos = new Intent(PreEntradasActivity.this, subirFotos.class);
+                            startService(cargarFotos);
+                        }
+
+                        /*if (!Offline){
                             //Solo ejecutar si el servicio no se esta ejecutando
                             if (!servicioFotos()){
                                 Intent cargarFotos = new Intent(PreEntradasActivity.this, subirFotos.class);
                                 startService(cargarFotos);
                             }
-                        }
+                        }*/
 
                         if(Integer.parseInt(Conf.getTicketE())==1){
                                 Imprimir();

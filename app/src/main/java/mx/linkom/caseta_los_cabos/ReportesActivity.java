@@ -44,8 +44,8 @@ public class ReportesActivity extends  Menu {
 
     private GridView gridList,gridList2,gridList3,gridList4,gridList5,gridList6;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +58,15 @@ public class ReportesActivity extends  Menu {
         gridList4 = (GridView)findViewById(R.id.gridList4);
         gridList5 = (GridView)findViewById(R.id.gridList5);
         gridList6 = (GridView)findViewById(R.id.gridList6);
-        iconoInternet = (ImageView)findViewById(R.id.iconoInternetReportes);
+        /*iconoInternet = (ImageView)findViewById(R.id.iconoInternetReportes);*/
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onStart() {
         super.onStart();
-        if (Global_info.getINTERNET().equals("Si")){
+        menu();
+
+        /*if (Global_info.getINTERNET().equals("Si")){
             iconoInternet.setImageResource(R.drawable.ic_online);
             Offline = false;
             menu();
@@ -97,7 +99,7 @@ public class ReportesActivity extends  Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
     }
 
 

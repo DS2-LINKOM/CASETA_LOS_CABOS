@@ -82,9 +82,9 @@ public class RondinIncidenciasQr extends Menu {
     Uri uri_img,uri_img2,uri_img3;
     JSONArray ja1;
 
-    boolean Offline = false;
+    /*boolean Offline = false;*/
     String rutaImagen1, rutaImagen2, rutaImagen3, nombreImagen1, nombreImagen2, nombreImagen3;
-    ImageView iconoInternet;
+    /*ImageView iconoInternet;*/
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +132,7 @@ public class RondinIncidenciasQr extends Menu {
         foto2 = (LinearLayout) findViewById(R.id.foto2);
         foto3 = (LinearLayout) findViewById(R.id.foto3);
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetRondinIncidenciasQr);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetRondinIncidenciasQr);
 
         if (Global_info.getINTERNET().equals("Si")){
             Offline = false;
@@ -165,7 +165,7 @@ public class RondinIncidenciasQr extends Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
 
         foto1_boton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,11 +274,13 @@ public class RondinIncidenciasQr extends Menu {
         pd3= new ProgressDialog(this);
         pd3.setMessage("Subiendo Foto 3...");
 
-        if (Offline){
+        rondin();
+
+        /*if (Offline){
             rondinOffline();
         }else{
             rondin();
-        }
+        }*/
 
     }
 
@@ -657,6 +659,7 @@ public class RondinIncidenciasQr extends Menu {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -791,12 +794,16 @@ public class RondinIncidenciasQr extends Menu {
                 .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     public void onClick(DialogInterface dialog, int id) {
-                        if (Offline){
+
+                        pd.show();
+                        Registrar(Ids);
+
+                        /*if (Offline){
                             RegistrarOffline(Ids);
                         }else{
                             pd.show();
                             Registrar(Ids);
-                        }
+                        }*/
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -1231,13 +1238,18 @@ public class RondinIncidenciasQr extends Menu {
                 .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        if (!Offline){
+                        if (!servicioFotos()) {
+                            Intent cargarFotos = new Intent(RondinIncidenciasQr.this, subirFotos.class);
+                            startService(cargarFotos);
+                        }
+
+                        /*if (!Offline){
                             //Solo ejecutar si el servicio no se esta ejecutando
                             if (!servicioFotos()) {
                                 Intent cargarFotos = new Intent(RondinIncidenciasQr.this, subirFotos.class);
                                 startService(cargarFotos);
                             }
-                        }
+                        }*/
 
                         Intent i = new Intent(getApplicationContext(), Rondines.class);
                         startActivity(i);

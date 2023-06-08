@@ -35,8 +35,8 @@ public class EntregaFolio  extends mx.linkom.caseta_los_cabos.Menu {
     Button buscar;
     JSONArray ja1;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class EntregaFolio  extends mx.linkom.caseta_los_cabos.Menu {
         folio = (EditText) findViewById(R.id.setFolio);
         buscar = (Button) findViewById(R.id.btnBuscar);
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetEntregaFolio);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetEntregaFolio);
 
         if (Global_info.getINTERNET().equals("Si")){
             iconoInternet.setImageResource(R.drawable.ic_online);
@@ -79,16 +79,18 @@ public class EntregaFolio  extends mx.linkom.caseta_los_cabos.Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
 
         buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Offline){
+                check();
+
+                /*if (Offline){
                     checkOffline();
                 }else {
                     check();
-                }
+                }*/
             }});
 
     }
@@ -188,6 +190,7 @@ public class EntregaFolio  extends mx.linkom.caseta_los_cabos.Menu {
     }
 
     public void check() {
+        Log.e("Correspondencia", "Método check");
         String url = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/correspondencia_5.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -195,12 +198,16 @@ public class EntregaFolio  extends mx.linkom.caseta_los_cabos.Menu {
             @Override
             public void onResponse(String response) {
 
+                Log.e("Correspondencia", response);
+
                 response = response.replace("][",",");
                 if (response.length()>0){
                     try {
                         ja1 = new JSONArray(response);
 
                         Conf.setPlacas(ja1.getString(0));
+                        Log.e("Correspondencia", ja1.getString(0));
+
                         Intent i = new Intent(getApplicationContext(), EntregaActivity.class);
                         startActivity(i);
                         finish();

@@ -64,8 +64,8 @@ public class RondinInfoActivity extends mx.linkom.caseta_los_cabos.Menu  impleme
     LinearLayout registrar1;
     Button Incidencia;
 
-    boolean Offline;
-    ImageView iconoInternet;
+    /*boolean Offline;
+    ImageView iconoInternet;*/
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -80,10 +80,12 @@ public class RondinInfoActivity extends mx.linkom.caseta_los_cabos.Menu  impleme
         Registrar = (Button) findViewById(R.id.btnRegistrar);
         Incidencia = (Button) findViewById(R.id.btnIncidencia);
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetRondinInfo);
+       /* iconoInternet = (ImageView) findViewById(R.id.iconoInternetRondinInfo);*/
         // dtl_rondines();
 
-        if (Global_info.getINTERNET().equals("Si")){
+        rondin();
+
+        /*if (Global_info.getINTERNET().equals("Si")){
             rondin();
             Offline = false;
             iconoInternet.setImageResource(R.drawable.ic_online);
@@ -118,7 +120,7 @@ public class RondinInfoActivity extends mx.linkom.caseta_los_cabos.Menu  impleme
                             }).create().show();
                 }
             }
-        });
+        });*/
 
         Incidencia.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,9 +142,11 @@ public class RondinInfoActivity extends mx.linkom.caseta_los_cabos.Menu  impleme
         } else {
             registrar1.setVisibility(View.VISIBLE);
 
-            if (!Offline){
+            locationStart();
+
+            /*if (!Offline){
                 locationStart();
-            }
+            }*/
         }
         Log.e("Error ", "LINKOM ST: " +  Conf.getRondin());
 
@@ -486,11 +490,13 @@ public class RondinInfoActivity extends mx.linkom.caseta_los_cabos.Menu  impleme
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     public void onClick(DialogInterface dialog, int id) {
                         Registrar.setEnabled(false);
-                        if (Offline){
+                        Ubicacion();
+
+                        /*if (Offline){
                             UbicacionOffline();
                         }else {
                             Ubicacion();
-                        }
+                        }*/
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

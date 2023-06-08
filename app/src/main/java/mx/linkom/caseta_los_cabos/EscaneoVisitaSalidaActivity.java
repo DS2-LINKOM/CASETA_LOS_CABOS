@@ -78,8 +78,8 @@ public class EscaneoVisitaSalidaActivity extends mx.linkom.caseta_los_cabos.Menu
     Button Lector;
     LinearLayout Qr,Qr2;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
 
     LinearLayout LayoutBtnPlaca, FotoPlacaView;
     Button btnFotoPlaca;
@@ -116,7 +116,7 @@ public class EscaneoVisitaSalidaActivity extends mx.linkom.caseta_los_cabos.Menu
         btnFotoPlaca = (Button) findViewById(R.id.btnFotoPlaca);
         viewPlaca = (ImageView) findViewById(R.id.viewPlaca);
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetEscaneoVisitaSalidas);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetEscaneoVisitaSalidas);
 
         if (Global_info.getINTERNET().equals("Si")){
             iconoInternet.setImageResource(R.drawable.ic_online);
@@ -149,7 +149,7 @@ public class EscaneoVisitaSalidaActivity extends mx.linkom.caseta_los_cabos.Menu
                             }).create().show();
                 }
             }
-        });
+        });*/
 
         try {
             objectDetectorClass = new objectDetectorClass(getAssets(), "detectPlacaLKM.tflite", "labelmapTf.txt", 320);
@@ -160,11 +160,13 @@ public class EscaneoVisitaSalidaActivity extends mx.linkom.caseta_los_cabos.Menu
             Log.e("MainActivity", "Error al cargar modelo");
         }
 
-        if (Offline){
+        menu();
+
+        /*if (Offline){
             menuOffline();
         }else{
             menu();
-        }
+        }*/
 
         btnFotoPlaca.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,20 +186,26 @@ public class EscaneoVisitaSalidaActivity extends mx.linkom.caseta_los_cabos.Menu
         Buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Offline){
+
+                QR_codigo();
+
+                /*if (Offline){
                     QR_codigoOffline();
                 }else {
                     QR_codigo();
-                }
+                }*/
             }});
         Buscar1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Offline){
+
+                placas();
+
+                /*if (Offline){
                     placasOffline();
                 }else {
                     placas();
-                }
+                }*/
             }});
 
         Conf = new Configuracion(this);
@@ -369,18 +377,22 @@ public class EscaneoVisitaSalidaActivity extends mx.linkom.caseta_los_cabos.Menu
                         if (URLUtil.isValidUrl(token)) {
 
                             Conf.setQR(token);
-                            if (Offline){
+                            QR();
+
+                            /*if (Offline){
                                 QROffline();
                             }else {
                                 QR();
-                            }
+                            }*/
                         } else {
                             Conf.setQR(token);
-                            if (Offline){
+                            QR();
+
+                            /*if (Offline){
                                 QROffline();
                             }else {
                                 QR();
-                            }
+                            }*/
                         }
 
                         new Thread(new Runnable() {
@@ -1367,6 +1379,7 @@ public class EscaneoVisitaSalidaActivity extends mx.linkom.caseta_los_cabos.Menu
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

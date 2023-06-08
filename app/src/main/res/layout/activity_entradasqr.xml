@@ -54,13 +54,13 @@
                         android:textColor="@color/fontColorBlanco"
                         android:textSize="@dimen/fontSizeEncabezados" />
 
-                    <ImageView
+                    <!--<ImageView
                         android:id="@+id/iconoInternetEntradasQr"
                         android:layout_width="44dp"
                         android:layout_height="28dp"
                         android:layout_alignParentStart="false"
                         android:layout_alignParentEnd="true"
-                        app:srcCompat="@drawable/ic_offline" />
+                        app:srcCompat="@drawable/ic_offline" />-->
 
                 </RelativeLayout>
             </LinearLayout>

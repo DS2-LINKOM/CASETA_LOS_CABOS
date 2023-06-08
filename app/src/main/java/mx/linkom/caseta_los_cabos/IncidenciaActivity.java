@@ -78,8 +78,8 @@ public class IncidenciaActivity  extends mx.linkom.caseta_los_cabos.Menu{
     Uri uri_img,uri_img2,uri_img3;
 
     String rutaImagen1, rutaImagen2, rutaImagen3, nombreImagen1, nombreImagen2, nombreImagen3;
-    boolean Offline = false;
-    ImageView iconoInternet;
+    /*boolean Offline = false;
+    ImageView iconoInternet;*/
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,7 +126,7 @@ public class IncidenciaActivity  extends mx.linkom.caseta_los_cabos.Menu{
         foto2 = (LinearLayout) findViewById(R.id.foto2);
         foto3 = (LinearLayout) findViewById(R.id.foto3);
 
-        iconoInternet = (ImageView)findViewById(R.id.iconoInternetIncidencia);
+        /*iconoInternet = (ImageView)findViewById(R.id.iconoInternetIncidencia);
 
         if (Global_info.getINTERNET().equals("Si")){
             //Es online
@@ -161,7 +161,7 @@ public class IncidenciaActivity  extends mx.linkom.caseta_los_cabos.Menu{
                             }).create().show();
                 }
             }
-        });
+        });*/
 
 
         foto1_boton.setOnClickListener(new View.OnClickListener() {
@@ -526,6 +526,7 @@ public class IncidenciaActivity  extends mx.linkom.caseta_los_cabos.Menu{
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -663,12 +664,15 @@ public class IncidenciaActivity  extends mx.linkom.caseta_los_cabos.Menu{
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     public void onClick(DialogInterface dialog, int id) {
                         //Validar conexión a internet
-                        if (Offline){
+                        pd.show();
+                        Registrar(Ids);
+
+                        /*if (Offline){
                             RegistrarOffline(Ids);
                         }else{
                             pd.show();
                             Registrar(Ids);
-                        }
+                        }*/
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -1087,13 +1091,18 @@ public class IncidenciaActivity  extends mx.linkom.caseta_los_cabos.Menu{
                 .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        if (!Offline){
+                        if (!servicioFotos()){
+                            Intent cargarFotos = new Intent(IncidenciaActivity.this, subirFotos.class);
+                            startService(cargarFotos);
+                        }
+
+                        /*if (!Offline){
                             //Solo ejecutar si el servicio no se esta ejecutando
                             if (!servicioFotos()){
                                 Intent cargarFotos = new Intent(IncidenciaActivity.this, subirFotos.class);
                                 startService(cargarFotos);
                             }
-                        }
+                        }*/
 
                         Intent i = new Intent(getApplicationContext(), ReportesActivity.class);
                         startActivity(i);

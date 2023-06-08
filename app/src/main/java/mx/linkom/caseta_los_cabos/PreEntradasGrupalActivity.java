@@ -101,8 +101,8 @@ public class PreEntradasGrupalActivity extends mx.linkom.caseta_los_cabos.Menu {
     int fotos1, fotos2, fotos3;
     EditText Comentarios;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
     String rutaImagen1, rutaImagen2, rutaImagen3, rutaImagenPlaca = "", nombreImagen1, nombreImagen2, nombreImagen3, nombreImagenPlaca = "";
 
     LinearLayout espacio1Placa, FotoPlaca, espacioPlaca, FotoPlacaView, espacio2Placa;
@@ -193,7 +193,7 @@ public class PreEntradasGrupalActivity extends mx.linkom.caseta_los_cabos.Menu {
         espacio2Placa = (LinearLayout) findViewById(R.id.espacio2Placa);
 
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetPreentradasGrupalQR);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetPreentradasGrupalQR);
 
         if (Global_info.getINTERNET().equals("Si")) {
             iconoInternet.setImageResource(R.drawable.ic_online);
@@ -226,7 +226,7 @@ public class PreEntradasGrupalActivity extends mx.linkom.caseta_los_cabos.Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
 
         Intent intent = getIntent();
         nombreImagenPlaca = intent.getStringExtra("nombreFotoPlaca");
@@ -243,11 +243,14 @@ public class PreEntradasGrupalActivity extends mx.linkom.caseta_los_cabos.Menu {
             rlVista.setVisibility(View.VISIBLE);
             rlPermitido.setVisibility(View.GONE);
             rlDenegado.setVisibility(View.GONE);
-            if (Offline) {
+
+            menu();
+
+            /*if (Offline) {
                 menuOffline();
             } else {
                 menu();
-            }
+            }*/
         } else if (Conf.getST().equals("Denegado")) {
             rlDenegado.setVisibility(View.VISIBLE);
             rlVista.setVisibility(View.GONE);
@@ -1054,6 +1057,7 @@ public class PreEntradasGrupalActivity extends mx.linkom.caseta_los_cabos.Menu {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1084,6 +1088,7 @@ public class PreEntradasGrupalActivity extends mx.linkom.caseta_los_cabos.Menu {
                     bitmap = BitmapFactory.decodeFile(getApplicationContext().getExternalFilesDir(null) + "/accesosGrupal1.png");
                 }*/
 
+                txtFoto1.setVisibility(View.GONE);
                 Foto1View.setVisibility(View.VISIBLE);
                 view1.setVisibility(View.VISIBLE);
                 view1.setImageBitmap(bitmap);
@@ -1115,6 +1120,7 @@ public class PreEntradasGrupalActivity extends mx.linkom.caseta_los_cabos.Menu {
                     bitmap2 = BitmapFactory.decodeFile(getApplicationContext().getExternalFilesDir(null) + "/accesosGrupal2.png");
                 }*/
 
+                txtFoto2.setVisibility(View.GONE);
                 Foto2View.setVisibility(View.VISIBLE);
                 view2.setVisibility(View.VISIBLE);
                 view2.setImageBitmap(bitmap2);
@@ -1148,6 +1154,7 @@ public class PreEntradasGrupalActivity extends mx.linkom.caseta_los_cabos.Menu {
                     bitmap3 = BitmapFactory.decodeFile(getApplicationContext().getExternalFilesDir(null) + "/accesosGrupal3.png");
                 }*/
 
+                txtFoto3.setVisibility(View.GONE);
                 Foto3View.setVisibility(View.VISIBLE);
                 view3.setVisibility(View.VISIBLE);
                 view3.setImageBitmap(bitmap3);
@@ -1619,7 +1626,73 @@ public class PreEntradasGrupalActivity extends mx.linkom.caseta_los_cabos.Menu {
                     Placas.setText(Conf.getPlacas());
                     Comentarios.setText(ja1.getString(9));
 
-                    if (!Offline) {
+                    storageReference.child(Conf.getPin() + "/caseta/" + ja7.getString(11))
+                            .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                                @Override
+
+                                public void onSuccess(Uri uri) {
+                                    Glide.with(PreEntradasGrupalActivity.this)
+                                            .load(uri)
+                                            .error(R.drawable.log)
+                                            .centerInside()
+                                            .into(view1);
+                                    txtFoto1.setVisibility(View.GONE);
+                                    view1.setVisibility(View.VISIBLE);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    txtFoto1.setText(Global_info.getTexto2Imagenes());
+                                    // Handle any errors
+                                }
+                            });
+
+                    storageReference.child(Conf.getPin() + "/caseta/" + ja7.getString(12))
+                            .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                                @Override
+
+                                public void onSuccess(Uri uri) {
+                                    Glide.with(PreEntradasGrupalActivity.this)
+                                            .load(uri)
+                                            .error(R.drawable.log)
+                                            .centerInside()
+                                            .into(view2);
+                                    txtFoto2.setVisibility(View.GONE);
+                                    view2.setVisibility(View.VISIBLE);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    txtFoto2.setText(Global_info.getTexto2Imagenes());
+                                    // Handle any errors
+                                }
+                            });
+
+                    storageReference.child(Conf.getPin() + "/caseta/" + ja7.getString(13))
+                            .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                                @Override
+
+                                public void onSuccess(Uri uri) {
+                                    Glide.with(PreEntradasGrupalActivity.this)
+                                            .load(uri)
+                                            .error(R.drawable.log)
+                                            .centerInside()
+                                            .into(view3);
+                                    txtFoto3.setVisibility(View.GONE);
+                                    view3.setVisibility(View.VISIBLE);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    txtFoto3.setText(Global_info.getTexto2Imagenes());
+                                    // Handle any errors
+                                }
+                            });
+
+                    /*if (!Offline) {
                         storageReference.child(Conf.getPin() + "/caseta/" + ja7.getString(11))
                                 .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
 
@@ -1689,7 +1762,7 @@ public class PreEntradasGrupalActivity extends mx.linkom.caseta_los_cabos.Menu {
                         txtFoto1.setText(Global_info.getTexto3Imagenes());
                         txtFoto2.setText(Global_info.getTexto3Imagenes());
                         txtFoto3.setText(Global_info.getTexto3Imagenes());
-                    }
+                    }*/
 
                 } else if (ja4.getString(0).equals("1")) { //Entro y quiere volver a entrar
                     rlVista.setVisibility(View.GONE);
@@ -1737,7 +1810,15 @@ public class PreEntradasGrupalActivity extends mx.linkom.caseta_los_cabos.Menu {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     public void onClick(DialogInterface dialog, int id) {
-                        if (Offline) {
+
+                        try {
+                            pd.show();
+                            Registrar();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        /*if (Offline) {
                             RegistrarOffline();
                         } else {
                             try {
@@ -1746,7 +1827,7 @@ public class PreEntradasGrupalActivity extends mx.linkom.caseta_los_cabos.Menu {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                        }
+                        }*/
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -2216,13 +2297,18 @@ public class PreEntradasGrupalActivity extends mx.linkom.caseta_los_cabos.Menu {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        if (!Offline) {
+                        if (!servicioFotos()) {
+                            Intent cargarFotos = new Intent(PreEntradasGrupalActivity.this, subirFotos.class);
+                            startService(cargarFotos);
+                        }
+
+                        /*if (!Offline) {
                             //Solo ejecutar si el servicio no se esta ejecutando
                             if (!servicioFotos()) {
                                 Intent cargarFotos = new Intent(PreEntradasGrupalActivity.this, subirFotos.class);
                                 startService(cargarFotos);
                             }
-                        }
+                        }*/
 
 
                         Intent i = new Intent(getApplicationContext(), EntradasSalidasActivity.class);

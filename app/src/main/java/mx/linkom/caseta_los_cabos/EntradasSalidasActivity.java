@@ -45,8 +45,8 @@ public class EntradasSalidasActivity extends  mx.linkom.caseta_los_cabos.Menu {
     JSONArray ja1;
     public GridView gridList,gridList2,gridList3,gridList4,gridList5;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class EntradasSalidasActivity extends  mx.linkom.caseta_los_cabos.Menu {
         gridList5 = (GridView)findViewById(R.id.gridList5);
 
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetEntradasSalidas);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetEntradasSalidas);
 
         if (Global_info.getINTERNET().equals("Si")){
             iconoInternet.setImageResource(R.drawable.ic_online);
@@ -94,17 +94,19 @@ public class EntradasSalidasActivity extends  mx.linkom.caseta_los_cabos.Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onStart() {
         super.onStart();
-        if (Offline){
+        menu();
+
+        /*if (Offline){
             menuOffline();
         }else {
             menu();
-        }
+        }*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

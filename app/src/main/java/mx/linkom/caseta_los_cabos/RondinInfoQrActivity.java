@@ -62,8 +62,8 @@ public class RondinInfoQrActivity extends mx.linkom.caseta_los_cabos.Menu {
     LinearLayout qr;
     Button Incidencia;
 
-    boolean Offline = false;
-    ImageView iconoInternet;
+    /*boolean Offline = false;
+    ImageView iconoInternet;*/
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -83,7 +83,7 @@ public class RondinInfoQrActivity extends mx.linkom.caseta_los_cabos.Menu {
 
         Incidencia = (Button) findViewById(R.id.btnIncidencia);
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetRondinInfoQr);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetRondinInfoQr);
 
         if (Global_info.getINTERNET().equals("Si")){
             Offline = false;
@@ -116,7 +116,7 @@ public class RondinInfoQrActivity extends mx.linkom.caseta_los_cabos.Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
 
         Incidencia.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,11 +134,13 @@ public class RondinInfoQrActivity extends mx.linkom.caseta_los_cabos.Menu {
             }});
         initQR();
 
-        if (Offline){
+        rondin();
+
+        /*if (Offline){
             rondinOffline();
         }else {
             rondin();
-        }
+        }*/
     }
 
 
@@ -224,20 +226,24 @@ public class RondinInfoQrActivity extends mx.linkom.caseta_los_cabos.Menu {
                         if (URLUtil.isValidUrl(token)) {
 
                             Conf.setQRondines(token);
-                            if (Offline){
+                            Registrar();
+
+                            /*if (Offline){
                                 RegistrarOffline();
                             }else{
                                 Registrar();
-                            }
+                            }*/
 
                         } else {
 
                             Conf.setQRondines(token);
-                            if (Offline){
+                            Registrar();
+
+                            /*if (Offline){
                                 RegistrarOffline();
                             }else{
                                 Registrar();
-                            }
+                            }*/
 
                         }
 

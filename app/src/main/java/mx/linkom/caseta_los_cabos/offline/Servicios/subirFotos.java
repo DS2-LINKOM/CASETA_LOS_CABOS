@@ -103,7 +103,7 @@ public class subirFotos extends Service {
                         );
 
                         notificationManager = NotificationManagerCompat.from(getApplicationContext());
-                        builder = new NotificationCompat.Builder(getApplicationContext(), CHANNELID);
+                        builder = new NotificationCompat.Builder(getApplicationContext(), "upload_photos_id");
                         builder.setContentTitle("Cargando...")
                                 .setContentText("Subiendo imagenes")
                                 .setSmallIcon(R.drawable.ic_subir)

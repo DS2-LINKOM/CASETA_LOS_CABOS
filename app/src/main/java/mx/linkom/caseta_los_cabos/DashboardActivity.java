@@ -59,8 +59,8 @@ public class DashboardActivity extends  mx.linkom.caseta_los_cabos.Menu {
 
     private GridView gridList,gridList2;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
 
     static {
         if (OpenCVLoader.initDebug()){
@@ -93,7 +93,7 @@ public class DashboardActivity extends  mx.linkom.caseta_los_cabos.Menu {
         rlTrabajadores = (LinearLayout)findViewById(R.id.rlTrabajadores);
         nombre.setText(Conf.getNomResi());
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetDashboard);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetDashboard);
 
         if (Global_info.getINTERNET().equals("Si")){
             iconoInternet.setImageResource(R.drawable.ic_online);
@@ -101,12 +101,12 @@ public class DashboardActivity extends  mx.linkom.caseta_los_cabos.Menu {
         }else{
             iconoInternet.setImageResource(R.drawable.ic_offline);
             Offline = true;
-        }
+        }*/
 
         if (OpenCVLoader.initDebug()) Log.e("openCV", "Ya funciona :D");
         else Log.e("openCV", "NO funciona :D");
 
-        //Iniciar el servicio
+        /*//Iniciar el servicio
         if(!foregroundServiceRunning()) { //Solo se va a ejecutar el servicio si es que aún no se esta ejecutando aun
             Intent serviceIntent = new Intent(this, testInternet.class);
             startForegroundService(serviceIntent);
@@ -135,7 +135,7 @@ public class DashboardActivity extends  mx.linkom.caseta_los_cabos.Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
     }
 
     //Método para saber si es que el servicio ya se esta ejecutando
@@ -159,11 +159,13 @@ public class DashboardActivity extends  mx.linkom.caseta_los_cabos.Menu {
 
         Registro();
         Sesion();
-        if (Global_info.getINTERNET().equals("Si")){
+        menu();
+
+        /*if (Global_info.getINTERNET().equals("Si")){
             menu();
         }else {
             menuOffline();
-        }
+        }*/
     }
 
 

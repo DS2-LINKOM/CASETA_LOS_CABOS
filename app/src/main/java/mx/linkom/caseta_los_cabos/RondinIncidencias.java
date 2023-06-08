@@ -85,8 +85,8 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
     JSONArray ja1;
 
     String rutaImagen1, rutaImagen2, rutaImagen3, nombreImagen1, nombreImagen2, nombreImagen3;
-    boolean Offline = false;
-    ImageView iconoInternet;
+    /*boolean Offline = false;
+    ImageView iconoInternet;*/
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +134,7 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
         foto2 = (LinearLayout) findViewById(R.id.foto2);
         foto3 = (LinearLayout) findViewById(R.id.foto3);
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetRondinIncidencia);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetRondinIncidencia);
 
         if (Global_info.getINTERNET().equals("Si")){
             Offline = false;
@@ -167,7 +167,7 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
                             }).create().show();
                 }
             }
-        });
+        });*/
 
 
         foto1_boton.setOnClickListener(new View.OnClickListener() {
@@ -282,11 +282,13 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
         pd3= new ProgressDialog(this);
         pd3.setMessage("Subiendo Foto 3...");
 
-        if (Offline){
+        rondin();
+
+        /*if (Offline){
             rondinOffline();
         }else{
             rondin();
-        }
+        }*/
     }
 
     InputFilter filter = new InputFilter() {
@@ -663,6 +665,7 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -803,12 +806,15 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
                         btnContinuar5.setEnabled(false);
                         btnContinuar6.setEnabled(false);
 
-                        if (Offline){
+                        pd.show();
+                        Registrar(Ids);
+
+                        /*if (Offline){
                             RegistrarOffline(Ids);
                         }else {
                             pd.show();
                             Registrar(Ids);
-                        }
+                        }*/
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -1242,13 +1248,18 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
                 .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        if (!Offline){
+                        if (!servicioFotos()) {
+                            Intent cargarFotos = new Intent(RondinIncidencias.this, subirFotos.class);
+                            startService(cargarFotos);
+                        }
+
+                        /*if (!Offline){
                             //Solo ejecutar si el servicio no se esta ejecutando
                             if (!servicioFotos()) {
                                 Intent cargarFotos = new Intent(RondinIncidencias.this, subirFotos.class);
                                 startService(cargarFotos);
                             }
-                        }
+                        }*/
 
                         Intent i = new Intent(getApplicationContext(), mx.linkom.caseta_los_cabos.Rondines.class);
                         startActivity(i);

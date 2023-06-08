@@ -62,8 +62,8 @@ public class AccesosAutosSalidasActivity extends Menu {
     TextView nombre_foto1,nombre_foto2,nombre_foto3;
     LinearLayout Foto1, Foto2,Foto3,Foto1View,Foto2View,Foto3View,espacio2,espacio3,espacio4,espacio5,espacio6,espacio8,espacio9,espacio10;
 
-    ImageView iconoInternet;
-    boolean Offline = false;
+    /*ImageView iconoInternet;
+    boolean Offline = false;*/
     TextView txtFoto1, txtFoto2, txtFoto3;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -121,7 +121,7 @@ public class AccesosAutosSalidasActivity extends Menu {
         rlDenegado = (LinearLayout) findViewById(R.id.rlDenegado);
         tvMensaje = (TextView)findViewById(R.id.setMensaje);
 
-        iconoInternet = (ImageView) findViewById(R.id.iconoInternetAccesoAutosSalidas);
+        /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetAccesoAutosSalidas);
 
         if (Global_info.getINTERNET().equals("Si")){
             iconoInternet.setImageResource(R.drawable.ic_online);
@@ -154,7 +154,7 @@ public class AccesosAutosSalidasActivity extends Menu {
                             }).create().show();
                 }
             }
-        });
+        });*/
 
         Nombre = (TextView)findViewById(R.id.setNombre);
         Dire = (TextView)findViewById(R.id.setDire);
@@ -173,11 +173,14 @@ public class AccesosAutosSalidasActivity extends Menu {
             rlVista.setVisibility(View.VISIBLE);
             rlPermitido.setVisibility(View.GONE);
             rlDenegado.setVisibility(View.GONE);
-            if (Offline){
+
+            menu();
+
+            /*if (Offline){
                 menuOffline();
             }else {
                 menu();
-            }
+            }*/
         }else if(Conf.getST().equals("Denegado")){
             rlDenegado.setVisibility(View.VISIBLE);
             rlVista.setVisibility(View.GONE);
@@ -823,7 +826,30 @@ public class AccesosAutosSalidasActivity extends Menu {
                     }else{
                         nombre_foto1.setText(ja6.getString(4)+":");
 
-                        if (!Offline){
+                        storageReference.child(Conf.getPin()+"/caseta/"+ja8.getString(8))
+                                .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                                    @Override
+
+                                    public void onSuccess(Uri uri) {
+                                        Glide.with(AccesosAutosSalidasActivity.this)
+                                                .load(uri)
+                                                .error(R.drawable.log)
+                                                .centerInside()
+                                                .into(view1);
+
+                                        txtFoto1.setVisibility(View.GONE);
+                                        view1.setVisibility(View.VISIBLE);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        // Handle any errors
+                                        txtFoto1.setText(Global_info.getTexto2Imagenes());
+                                    }
+                                });
+
+                        /*if (!Offline){
                             storageReference.child(Conf.getPin()+"/caseta/"+ja8.getString(8))
                                     .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
 
@@ -846,7 +872,7 @@ public class AccesosAutosSalidasActivity extends Menu {
                                             txtFoto1.setText(Global_info.getTexto2Imagenes());
                                         }
                                     });
-                        }else txtFoto1.setText(Global_info.getTexto3Imagenes());
+                        }else txtFoto1.setText(Global_info.getTexto3Imagenes());*/
                     }
 
                     //FOTO2
@@ -859,7 +885,29 @@ public class AccesosAutosSalidasActivity extends Menu {
                     }else{
                         nombre_foto2.setText(ja6.getString(6)+":");
 
-                        if (!Offline){
+                        storageReference.child(Conf.getPin()+"/caseta/"+ja8.getString(9))
+                                .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                                    @Override
+
+                                    public void onSuccess(Uri uri) {
+                                        Glide.with(AccesosAutosSalidasActivity.this)
+                                                .load(uri)
+                                                .error(R.drawable.log)
+                                                .centerInside()
+                                                .into(view2);
+                                        txtFoto2.setVisibility(View.GONE);
+                                        view2.setVisibility(View.VISIBLE);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        // Handle any errors
+                                        txtFoto2.setText(Global_info.getTexto2Imagenes());
+                                    }
+                                });
+
+                        /*if (!Offline){
                             storageReference.child(Conf.getPin()+"/caseta/"+ja8.getString(9))
                                     .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
 
@@ -881,7 +929,7 @@ public class AccesosAutosSalidasActivity extends Menu {
                                             txtFoto2.setText(Global_info.getTexto2Imagenes());
                                         }
                                     });
-                        }else txtFoto2.setText(Global_info.getTexto3Imagenes());
+                        }else txtFoto2.setText(Global_info.getTexto3Imagenes());*/
                     }
                     //FOTO3
                     if(ja8.getString(10).equals("")){
@@ -893,7 +941,30 @@ public class AccesosAutosSalidasActivity extends Menu {
                     }else{
                         nombre_foto3.setText(ja6.getString(8)+":");
 
-                        if (!Offline){
+                        storageReference.child(Conf.getPin()+"/caseta/"+ja8.getString(10))
+                                .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                                    @Override
+
+                                    public void onSuccess(Uri uri) {
+                                        Glide.with(AccesosAutosSalidasActivity.this)
+                                                .load(uri)
+                                                .error(R.drawable.log)
+                                                .centerInside()
+                                                .into(view3);
+
+                                        txtFoto3.setVisibility(View.GONE);
+                                        view3.setVisibility(View.VISIBLE);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        // Handle any errors
+                                        txtFoto3.setText(Global_info.getTexto2Imagenes());
+                                    }
+                                });
+
+                        /*if (!Offline){
                             storageReference.child(Conf.getPin()+"/caseta/"+ja8.getString(10))
                                     .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
 
@@ -916,7 +987,7 @@ public class AccesosAutosSalidasActivity extends Menu {
                                             txtFoto3.setText(Global_info.getTexto2Imagenes());
                                         }
                                     });
-                        } else txtFoto3.setText(Global_info.getTexto3Imagenes());
+                        } else txtFoto3.setText(Global_info.getTexto3Imagenes());*/
                     }
 
                 }else if(ja8.getString(11).equals("2")){
@@ -943,11 +1014,13 @@ public class AccesosAutosSalidasActivity extends Menu {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     public void onClick(DialogInterface dialog, int id) {
 
-                        if (Offline){
+                        Registrar();
+
+                        /*if (Offline){
                             RegistrarOffline();
                         }else {
                             Registrar();
-                        }
+                        }*/
 
                     }
                 })
