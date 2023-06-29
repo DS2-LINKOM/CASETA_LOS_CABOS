@@ -86,7 +86,7 @@ public class AccesosMultiplesActivity extends mx.linkom.caseta_los_cabos.Menu {
     ArrayList<String> names;
     JSONArray ja1, ja2, ja3, ja4, ja5, ja6;
     Bitmap bitmap, bitmap2, bitmap3;
-    ProgressDialog pd, pd2, pd3;
+    ProgressDialog pd, pd2, pd3, pd4, pd5;
     int foto;
     Date FechaA;
     String FechaC, f1, f2, f3;
@@ -108,7 +108,7 @@ public class AccesosMultiplesActivity extends mx.linkom.caseta_los_cabos.Menu {
 
     /*ImageView iconoInternet;
     boolean Offline = false;*/
-    String rutaImagen1, rutaImagen2, rutaImagen3, rutaImagenPlaca="", nombreImagen1, nombreImagen2, nombreImagen3, nombreImagenPlaca="";
+    String rutaImagen1="", rutaImagen2="", rutaImagen3="", rutaImagenPlaca="", nombreImagen1="", nombreImagen2="", nombreImagen3="", nombreImagenPlaca="";
 
     LinearLayout espacio1Placa, FotoPlaca, espacioPlaca, FotoPlacaView, espacio2Placa;
     TextView nombre_fotoPlaca;
@@ -266,10 +266,16 @@ public class AccesosMultiplesActivity extends mx.linkom.caseta_los_cabos.Menu {
         pd.setMessage("Registrando...");
 
         pd2 = new ProgressDialog(this);
-        pd2.setMessage("Subiendo Imagen 2...");
+        pd2.setMessage("Subiendo Imagenes.");
 
         pd3 = new ProgressDialog(this);
-        pd3.setMessage("Subiendo Imagen 3...");
+        pd3.setMessage("Subiendo Imagenes..");
+
+        pd4 = new ProgressDialog(this);
+        pd4.setMessage("Subiendo Imagenes...");
+
+        pd5 = new ProgressDialog(this);
+        pd5.setMessage("Subiendo Imagenes....");
 
 
         reg1.setOnClickListener(new View.OnClickListener() {
@@ -1824,55 +1830,63 @@ public class AccesosMultiplesActivity extends mx.linkom.caseta_los_cabos.Menu {
 
                         try {
 
-                            if (ja6.getString(0).equals("0") || ja6.getString(3).equals("0")) {
-                                f1 = "";
-                                f2 = "";
-                                f3 = "";
-                                Terminar();
-                            } else if (ja6.getString(3).equals("1") && ja6.getString(5).equals("0") && ja6.getString(7).equals("0")) {
-                                f1 = "app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio + ".png";
-                                f2 = "";
-                                f3 = "";
+                            if (Global_info.getCantidadFotosEnEsperaEnSegundoPlano(AccesosMultiplesActivity.this) >= Global_info.getLimiteFotosSegundoPlano()){
+                                if (ja6.getString(0).equals("0") || ja6.getString(3).equals("0")) {
+                                    //Terminar();
+                                } else if (ja6.getString(3).equals("1") && ja6.getString(5).equals("0") && ja6.getString(7).equals("0")) {
+                                    upload1();
+                                } else if (ja6.getString(3).equals("1") && ja6.getString(5).equals("1") && ja6.getString(7).equals("0")) {
+                                    upload1();
+                                    upload2();
+                                } else if (ja6.getString(3).equals("1") && ja6.getString(5).equals("1") && ja6.getString(7).equals("1")) {
+                                    upload1();
+                                    upload2();
+                                    upload3();
+                                }
 
-                                ContentValues val_img1 = ValuesImagen(f1, Conf.getPin() + "/caseta/" + f1.trim(), rutaImagen1);
-                                Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
+                                if (!nombreImagenPlaca.isEmpty()){
+                                    upload4();
+                                }
+                            }else {
+                                if (ja6.getString(0).equals("0") || ja6.getString(3).equals("0")) {
+                                    //Terminar();
+                                } else if (ja6.getString(3).equals("1") && ja6.getString(5).equals("0") && ja6.getString(7).equals("0")) {
 
-                                Terminar();
+                                    ContentValues val_img1 = ValuesImagen(nombreImagen1, Conf.getPin() + "/caseta/" + nombreImagen1.trim(), rutaImagen1);
+                                    Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
 
-                            } else if (ja6.getString(3).equals("1") && ja6.getString(5).equals("1") && ja6.getString(7).equals("0")) {
-                                f1 = "app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio + ".png";
-                                f2 = "app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio2 + ".png";
-                                f3 = "";
+                                } else if (ja6.getString(3).equals("1") && ja6.getString(5).equals("1") && ja6.getString(7).equals("0")) {
 
-                                ContentValues val_img1 = ValuesImagen(f1, Conf.getPin() + "/caseta/" + f1.trim(), rutaImagen1);
-                                Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
+                                    ContentValues val_img1 = ValuesImagen(nombreImagen1, Conf.getPin() + "/caseta/" + nombreImagen1.trim(), rutaImagen1);
+                                    Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
 
-                                ContentValues val_img2 = ValuesImagen(f2, Conf.getPin() + "/caseta/" + f2.trim(), rutaImagen2);
-                                Uri uri2 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img2);
+                                    ContentValues val_img2 = ValuesImagen(nombreImagen2, Conf.getPin() + "/caseta/" + nombreImagen2.trim(), rutaImagen2);
+                                    Uri uri2 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img2);
 
-                                Terminar();
+                                } else if (ja6.getString(3).equals("1") && ja6.getString(5).equals("1") && ja6.getString(7).equals("1")) {
 
-                            } else if (ja6.getString(3).equals("1") && ja6.getString(5).equals("1") && ja6.getString(7).equals("1")) {
-                                f1 = "app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio + ".png";
-                                f2 = "app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio2 + ".png";
-                                f3 = "app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio3 + ".png";
+                                    ContentValues val_img1 = ValuesImagen(nombreImagen1, Conf.getPin() + "/caseta/" + nombreImagen1.trim(), rutaImagen1);
+                                    Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
 
-                                ContentValues val_img1 = ValuesImagen(f1, Conf.getPin() + "/caseta/" + f1.trim(), rutaImagen1);
-                                Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
+                                    ContentValues val_img2 = ValuesImagen(nombreImagen2, Conf.getPin() + "/caseta/" + nombreImagen2.trim(), rutaImagen2);
+                                    Uri uri2 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img2);
 
-                                ContentValues val_img2 = ValuesImagen(f2, Conf.getPin() + "/caseta/" + f2.trim(), rutaImagen2);
-                                Uri uri2 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img2);
+                                    ContentValues val_img3 = ValuesImagen(nombreImagen3, Conf.getPin() + "/caseta/" + nombreImagen3.trim(), rutaImagen3);
+                                    Uri uri3 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img3);
 
-                                ContentValues val_img3 = ValuesImagen(f3, Conf.getPin() + "/caseta/" + f3.trim(), rutaImagen3);
-                                Uri uri3 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img3);
+                                }
 
-                                Terminar();
+                                if (!nombreImagenPlaca.isEmpty()){
+                                    ContentValues val_img1 = ValuesImagen(nombreImagenPlaca, Conf.getPin() + "/caseta/" + nombreImagenPlaca.trim(), rutaImagenPlaca);
+                                    Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
+                                }
                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-
+                        Terminar();
                     }
 
 
@@ -1887,28 +1901,6 @@ public class AccesosMultiplesActivity extends mx.linkom.caseta_los_cabos.Menu {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
 
-                    try {
-                        if (ja6.getString(0).equals("0") || ja6.getString(3).equals("0")) {
-                            f1 = "";
-                            f2 = "";
-                            f3 = "";
-                        } else if (ja6.getString(3).equals("1") && ja6.getString(5).equals("0") && ja6.getString(7).equals("0")) {
-                            f1 = "app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio + ".png";
-                            f2 = "";
-                            f3 = "";
-                        } else if (ja6.getString(3).equals("1") && ja6.getString(5).equals("1") && ja6.getString(7).equals("0")) {
-                            f1 = "app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio + ".png";
-                            f2 = "app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio2 + ".png";
-                            f3 = "";
-                        } else if (ja6.getString(3).equals("1") && ja6.getString(5).equals("1") && ja6.getString(7).equals("1")) {
-                            f1 = "app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio + ".png";
-                            f2 = "app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio2 + ".png";
-                            f3 = "app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio3 + ".png";
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
                     Map<String, String> params = new HashMap<>();
                     try {
 
@@ -1917,9 +1909,9 @@ public class AccesosMultiplesActivity extends mx.linkom.caseta_los_cabos.Menu {
                         params.put("guardia_de_entrada", Conf.getUsu().trim());
                         params.put("pasajeros", Pasajeros.getSelectedItem().toString());
                         params.put("placas", Placas.getText().toString().trim());
-                        params.put("foto1", f1);
-                        params.put("foto2", f2);
-                        params.put("foto3", f3);
+                        params.put("foto1", nombreImagen1);
+                        params.put("foto2", nombreImagen2);
+                        params.put("foto3", nombreImagen3);
                         params.put("foto4", nombreImagenPlaca);
                         params.put("usuario", ja2.getString(1).trim() + " " + ja2.getString(2).trim() + " " + ja2.getString(3).trim());
                         params.put("token", ja2.getString(5).trim());
@@ -1942,16 +1934,19 @@ public class AccesosMultiplesActivity extends mx.linkom.caseta_los_cabos.Menu {
 
     public void upload1() {
 
-        StorageReference mountainImagesRef = null;
-        mountainImagesRef = storageReference.child(Conf.getPin() + "/caseta/app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio + ".png");
+        Log.e("upload", "upload1()");
 
-        UploadTask uploadTask = mountainImagesRef.putFile(uri_img);
+        StorageReference mountainImagesRef = null;
+        mountainImagesRef = storageReference.child(Conf.getPin() + "/caseta/" + nombreImagen1);
+
+        Uri uri  = Uri.fromFile(new File(rutaImagen1));
+        UploadTask uploadTask = mountainImagesRef.putFile(uri);
 
         // Listen for state changes, errors, and completion of the upload.
         uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                pd.show(); // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                pd2.show(); // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 //System.out.println("Upload is " + progress + "% done");
                 // Toast.makeText(getApplicationContext(),"Cargando Imagen INE " + progress + "%", Toast.LENGTH_SHORT).show();
 
@@ -1965,11 +1960,13 @@ public class AccesosMultiplesActivity extends mx.linkom.caseta_los_cabos.Menu {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 Toast.makeText(AccesosMultiplesActivity.this, "Fallado", Toast.LENGTH_SHORT).show();
+                pd2.dismiss();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                pd.dismiss();
+                eliminarFotoDirectorioLocal(nombreImagen1);
+                pd2.dismiss();
 
             }
         });
@@ -1978,46 +1975,11 @@ public class AccesosMultiplesActivity extends mx.linkom.caseta_los_cabos.Menu {
     public void upload2() {
 
         StorageReference mountainImagesRef2 = null;
-        mountainImagesRef2 = storageReference.child(Conf.getPin() + "/caseta/app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio2 + ".png");
+        mountainImagesRef2 = storageReference.child(Conf.getPin() + "/caseta/" + nombreImagen2);
 
-        UploadTask uploadTask = mountainImagesRef2.putFile(uri_img2);
+        Uri uri  = Uri.fromFile(new File(rutaImagen2));
+        UploadTask uploadTask = mountainImagesRef2.putFile(uri);
 
-
-        // Listen for state changes, errors, and completion of the upload.
-        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                //System.out.println("Upload is " + progress + "% done");
-                //Toast.makeText(getApplicationContext(),"Cargando Imagen PLACA " + progress + "%", Toast.LENGTH_SHORT).show();
-                pd2.show();
-            }
-        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-                //Toast.makeText(AccesoActivity.this,"Pausado",Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(AccesosMultiplesActivity.this, "Fallado", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                pd2.dismiss();
-            }
-        });
-
-
-    }
-
-    public void upload3() {
-
-        StorageReference mountainImagesRef3 = null;
-        mountainImagesRef3 = storageReference.child(Conf.getPin() + "/caseta/app" + anio + mes + dia + Placas.getText().toString() + "-" + numero_aletorio3 + ".png");
-
-        UploadTask uploadTask = mountainImagesRef3.putFile(uri_img3);
 
         // Listen for state changes, errors, and completion of the upload.
         uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -2037,11 +1999,52 @@ public class AccesosMultiplesActivity extends mx.linkom.caseta_los_cabos.Menu {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 Toast.makeText(AccesosMultiplesActivity.this, "Fallado", Toast.LENGTH_SHORT).show();
+                pd3.dismiss();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                eliminarFotoDirectorioLocal(nombreImagen2);
                 pd3.dismiss();
+            }
+        });
+
+
+    }
+
+    public void upload3() {
+
+        StorageReference mountainImagesRef3 = null;
+        mountainImagesRef3 = storageReference.child(Conf.getPin() + "/caseta/" + nombreImagen3);
+
+        Uri uri  = Uri.fromFile(new File(rutaImagen3));
+        UploadTask uploadTask = mountainImagesRef3.putFile(uri);
+
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                //System.out.println("Upload is " + progress + "% done");
+                //Toast.makeText(getApplicationContext(),"Cargando Imagen PLACA " + progress + "%", Toast.LENGTH_SHORT).show();
+                pd4.show();
+            }
+        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+                //Toast.makeText(AccesoActivity.this,"Pausado",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(AccesosMultiplesActivity.this, "Fallado", Toast.LENGTH_SHORT).show();
+                pd4.dismiss();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                eliminarFotoDirectorioLocal(nombreImagen3);
+                pd4.dismiss();
 
             }
         });
@@ -2049,27 +2052,94 @@ public class AccesosMultiplesActivity extends mx.linkom.caseta_los_cabos.Menu {
 
     }
 
+    public void upload4() {
+
+        StorageReference mountainImagesRef3 = null;
+        mountainImagesRef3 = storageReference.child(Conf.getPin() + "/caseta/" + nombreImagenPlaca);
+
+        Uri uri  = Uri.fromFile(new File(rutaImagenPlaca));
+        UploadTask uploadTask = mountainImagesRef3.putFile(uri);
+
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                //System.out.println("Upload is " + progress + "% done");
+                //Toast.makeText(getApplicationContext(),"Cargando Imagen PLACA " + progress + "%", Toast.LENGTH_SHORT).show();
+                pd5.show();
+            }
+        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+                //Toast.makeText(AccesoActivity.this,"Pausado",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(AccesosMultiplesActivity.this, "Fallado", Toast.LENGTH_SHORT).show();
+                pd5.dismiss();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                eliminarFotoDirectorioLocal(nombreImagenPlaca);
+                pd5.dismiss();
+
+            }
+        });
+    }
+
+    public void eliminarFotoDirectorioLocal(String nombreFoto){
+        String tempfilepath ="";
+        File externalFilesDir = getExternalFilesDir(null);
+        if (externalFilesDir != null) {
+            tempfilepath = externalFilesDir.getAbsolutePath();
+            try {
+                File grTempFiles = new File(tempfilepath);
+                if (grTempFiles.exists()) {
+                    File[] files = grTempFiles.listFiles();
+                    if (grTempFiles.isDirectory() && files != null) {
+                        int numofFiles = files.length;
+
+                        for (int i = 0; i < numofFiles; i++) {
+                            try {
+                                File path = new File(files[i].getAbsolutePath());
+                                if (!path.isDirectory() && path.getName().equals(nombreFoto)) {
+                                    path.delete();
+                                }
+                            }catch (Exception e){
+                                Log.e("EliminarFoto", e.toString());
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("ErrorFile", "deleteDirectory: Failed to onCreate directory  " + tempfilepath + " for an unknown reason.");
+
+            }
+
+        }else {
+        }
+    }
+
 
     public void Terminar() {
-        pd.dismiss();
 
-        if (!nombreImagenPlaca.isEmpty()){
-            ContentValues val_img1 = ValuesImagen(nombreImagenPlaca, Conf.getPin() + "/caseta/" + nombreImagenPlaca.trim(), rutaImagenPlaca);
-            Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
+        if (Global_info.getCantidadFotosEnEsperaEnSegundoPlano(AccesosMultiplesActivity.this) > 0){
+            if (!servicioFotos()) {
+                Intent cargarFotos = new Intent(AccesosMultiplesActivity.this, subirFotos.class);
+                startService(cargarFotos);
+            }
         }
 
+        pd.dismiss();
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AccesosMultiplesActivity.this);
         alertDialogBuilder.setTitle("Alerta");
         alertDialogBuilder
                 .setMessage("Entrada de Visita Exitosa")
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
-                        if (!servicioFotos()) {
-                            Intent cargarFotos = new Intent(AccesosMultiplesActivity.this, subirFotos.class);
-                            startService(cargarFotos);
-                        }
-
                         /*if (!Offline){
                             //Solo ejecutar si el servicio no se esta ejecutando
                             if (!servicioFotos()) {

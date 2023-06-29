@@ -116,6 +116,8 @@ public class ContentProvider extends android.content.ContentProvider {
                     cursor = bd.rawQuery("SELECT titulo, direccionFirebase, rutaDispositivo FROM fotosOffline WHERE rutaDispositivo != '' ",null);
                 }else if (selection.trim().equals("uno")){
                     cursor = bd.rawQuery("SELECT titulo, direccionFirebase, rutaDispositivo FROM fotosOffline WHERE titulo = "+"'"+selectionArgs[0]+"'"+" ",null);
+                }else if (selection.trim().equals("cantidad")){
+                    cursor = bd.rawQuery("SELECT COUNT(id) as total FROM fotosOffline",null);
                 }
                 break;
             case RONDINES_UBICACIONES:

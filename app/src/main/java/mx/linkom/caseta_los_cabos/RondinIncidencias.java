@@ -76,7 +76,7 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
     LinearLayout registrar1,registrar2,registrar3,registrar4;
     LinearLayout foto2,foto3,espacio1,espacio2,espacio3,espacio4,espacio5,espacio6,espacio7;
     String ima1,ima2,ima3;
-    ProgressDialog pd,pd2,pd3;
+    ProgressDialog pd, pd2, pd3, pd4, pd5;
     FirebaseStorage storage;
     StorageReference storageReference;
     mx.linkom.caseta_los_cabos.Configuracion Conf;
@@ -84,7 +84,7 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
     Uri uri_img,uri_img2,uri_img3;
     JSONArray ja1;
 
-    String rutaImagen1, rutaImagen2, rutaImagen3, nombreImagen1, nombreImagen2, nombreImagen3;
+    String rutaImagen1="", rutaImagen2="", rutaImagen3="", rutaImagenPlaca="", nombreImagen1="", nombreImagen2="", nombreImagen3="", nombreImagenPlaca="";
     /*boolean Offline = false;
     ImageView iconoInternet;*/
 
@@ -273,14 +273,20 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
             }
         });
 
-        pd= new ProgressDialog(this);
+        pd = new ProgressDialog(this);
         pd.setMessage("Registrando...");
 
-        pd2= new ProgressDialog(this);
-        pd2.setMessage("Subiendo Foto 2...");
+        pd2 = new ProgressDialog(this);
+        pd2.setMessage("Subiendo Imagenes.");
 
-        pd3= new ProgressDialog(this);
-        pd3.setMessage("Subiendo Foto 3...");
+        pd3 = new ProgressDialog(this);
+        pd3.setMessage("Subiendo Imagenes..");
+
+        pd4 = new ProgressDialog(this);
+        pd4.setMessage("Subiendo Imagenes...");
+
+        pd5 = new ProgressDialog(this);
+        pd5.setMessage("Subiendo Imagenes....");
 
         rondin();
 
@@ -1027,6 +1033,48 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
                             }).create().show();
                 }else {
 
+                    if (Global_info.getCantidadFotosEnEsperaEnSegundoPlano(RondinIncidencias.this) >= Global_info.getLimiteFotosSegundoPlano()){
+                        if(Id==2){
+                            upload1();
+                            terminar();
+                        }else if(Id==3){
+                            upload1();
+                            upload2();
+                            terminar();
+                        }else if(Id==4){
+                            upload1();
+                            upload2();
+                            upload3();
+                            terminar();
+                        }
+                    }else {
+                        if(Id==2){
+                            ContentValues val_img4 =  ValuesImagen(nombreImagen1, Conf.getPin()+"/incidencias/"+nombreImagen1.trim(), rutaImagen1);
+                            Uri uri4 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img4);
+
+                            terminar();
+                        }else if(Id==3){
+                            ContentValues val_img4 =  ValuesImagen(nombreImagen1, Conf.getPin()+"/incidencias/"+nombreImagen1.trim(), rutaImagen1);
+                            Uri uri4 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img4);
+
+                            ContentValues val_img5 =  ValuesImagen(nombreImagen2, Conf.getPin()+"/incidencias/"+nombreImagen2.trim(), rutaImagen2);
+                            Uri uri5 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img5);
+
+                            terminar();
+                        }else if(Id==4){
+                            ContentValues val_img4 =  ValuesImagen(nombreImagen1, Conf.getPin()+"/incidencias/"+nombreImagen1.trim(), rutaImagen1);
+                            Uri uri4 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img4);
+
+                            ContentValues val_img5 =  ValuesImagen(nombreImagen2, Conf.getPin()+"/incidencias/"+nombreImagen2.trim(), rutaImagen2);
+                            Uri uri5 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img5);
+
+                            ContentValues val_img6 =  ValuesImagen(nombreImagen3, Conf.getPin()+"/incidencias/"+nombreImagen3.trim(), rutaImagen3);
+                            Uri uri6 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img6);
+
+                            terminar();
+                        }
+                    }
+
                     if(Id==1){
 
                         pd.dismiss();
@@ -1044,37 +1092,6 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
                                     }
                                 }).create().show();
 
-                    }else if(Id==2){
-                        ContentValues val_img4 =  ValuesImagen(nombreImagen1, Conf.getPin()+"/incidencias/"+nombreImagen1.trim(), rutaImagen1);
-                        Uri uri4 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img4);
-
-                        //upload1();
-                        terminar();
-                    }else if(Id==3){
-                        ContentValues val_img4 =  ValuesImagen(nombreImagen1, Conf.getPin()+"/incidencias/"+nombreImagen1.trim(), rutaImagen1);
-                        Uri uri4 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img4);
-
-                        ContentValues val_img5 =  ValuesImagen(nombreImagen2, Conf.getPin()+"/incidencias/"+nombreImagen2.trim(), rutaImagen2);
-                        Uri uri5 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img5);
-                        //upload1();
-                        //upload2();
-                        terminar();
-                    }else if(Id==4){
-                        ContentValues val_img4 =  ValuesImagen(nombreImagen1, Conf.getPin()+"/incidencias/"+nombreImagen1.trim(), rutaImagen1);
-                        Uri uri4 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img4);
-
-                        ContentValues val_img5 =  ValuesImagen(nombreImagen2, Conf.getPin()+"/incidencias/"+nombreImagen2.trim(), rutaImagen2);
-                        Uri uri5 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img5);
-
-                        ContentValues val_img6 =  ValuesImagen(nombreImagen3, Conf.getPin()+"/incidencias/"+nombreImagen3.trim(), rutaImagen3);
-                        Uri uri6 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img6);
-
-/*
-                        upload1();
-                        upload2();
-                        upload3();
-*/
-                        terminar();
                     }
                 }
             }
@@ -1091,32 +1108,13 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
 
                 Map<String, String> params = new HashMap<>();
 
-                if(Id==1){
-                    ima1="";
-                    ima2="";
-                    ima3="";
-                }else if(Id==2){
-                    ima1="app"+numero_aletorio+numero_aletorio3;
-                    ima2="";
-                    ima3="";
-                }else if(Id==3){
-                    ima1="app"+numero_aletorio+numero_aletorio3;
-                    ima2="app"+numero_aletorio2+numero_aletorio;
-                    ima3="";
-                }else if(Id==4){
-                    ima1="app"+numero_aletorio+numero_aletorio3;
-                    ima2="app"+numero_aletorio2+numero_aletorio;
-                    ima3="app"+numero_aletorio3+numero_aletorio2;
-                }
-
                 params.put("id_residencial", Conf.getResid().trim());
                 params.put("id_usuario", Conf.getUsu().trim());
                 params.put("Comentario", Comentarios.getText().toString().trim());
                 params.put("Accion", Accion.getText().toString().trim());
-                params.put("foto1", ima1);
-                params.put("foto2", ima2);
-                params.put("foto3", ima3);
-                params.put("foto3", ima3);
+                params.put("foto1", nombreImagen1);
+                params.put("foto2", nombreImagen2);
+                params.put("foto3", nombreImagen3);
                 try {
                     params.put("id_rondin", ja1.getString(5));
                     params.put("id_ubicacion", ja1.getString(0));
@@ -1134,17 +1132,20 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
     }
 
     public void upload1() {
+
+        Log.e("upload", "upload1()");
+
         StorageReference mountainImagesRef = null;
-        mountainImagesRef = storageReference.child(Conf.getPin()+"/incidencias/app"+numero_aletorio+numero_aletorio3);
+        mountainImagesRef = storageReference.child(Conf.getPin() + "/incidencias/" + nombreImagen1);
 
-        final UploadTask uploadTask = mountainImagesRef.putFile(uri_img);
-
+        Uri uri  = Uri.fromFile(new File(rutaImagen1));
+        UploadTask uploadTask = mountainImagesRef.putFile(uri);
 
         // Listen for state changes, errors, and completion of the upload.
         uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                pd.show(); // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                pd2.show(); // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 //System.out.println("Upload is " + progress + "% done");
                 // Toast.makeText(getApplicationContext(),"Cargando Imagen INE " + progress + "%", Toast.LENGTH_SHORT).show();
 
@@ -1157,58 +1158,27 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(RondinIncidencias.this,"Fallado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RondinIncidencias.this, "Fallado", Toast.LENGTH_SHORT).show();
+                pd2.dismiss();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                pd.dismiss();
+                eliminarFotoDirectorioLocal(nombreImagen1);
+                pd2.dismiss();
 
             }
         });
     }
+
     public void upload2() {
 
         StorageReference mountainImagesRef2 = null;
-        mountainImagesRef2 = storageReference.child(Conf.getPin()+"/incidencias/app"+numero_aletorio2+numero_aletorio);
+        mountainImagesRef2 = storageReference.child(Conf.getPin() + "/incidencias/" + nombreImagen2);
 
-        final UploadTask uploadTask = mountainImagesRef2.putFile(uri_img2);
+        Uri uri  = Uri.fromFile(new File(rutaImagen2));
+        UploadTask uploadTask = mountainImagesRef2.putFile(uri);
 
-        // Listen for state changes, errors, and completion of the upload.
-        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                //System.out.println("Upload is " + progress + "% done");
-                //Toast.makeText(getApplicationContext(),"Cargando Imagen PLACA " + progress + "%", Toast.LENGTH_SHORT).show();
-                pd2.show();
-            }
-        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-                //Toast.makeText(AccesoActivity.this,"Pausado",Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(RondinIncidencias.this,"Fallado", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                pd2.dismiss();
-
-
-
-
-            }
-        });
-    }
-    public void upload3() {
-        StorageReference mountainImagesRef3 = null;
-        mountainImagesRef3 = storageReference.child(Conf.getPin()+"/incidencias/app"+numero_aletorio3+numero_aletorio2);
-
-        final UploadTask uploadTask = mountainImagesRef3.putFile(uri_img3);
 
         // Listen for state changes, errors, and completion of the upload.
         uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -1227,18 +1197,102 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(RondinIncidencias.this,"Fallado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RondinIncidencias.this, "Fallado", Toast.LENGTH_SHORT).show();
+                pd3.dismiss();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                eliminarFotoDirectorioLocal(nombreImagen2);
                 pd3.dismiss();
+            }
+        });
+
+
+    }
+
+    public void upload3() {
+
+        StorageReference mountainImagesRef3 = null;
+        mountainImagesRef3 = storageReference.child(Conf.getPin() + "/incidencias/" + nombreImagen3);
+
+        Uri uri  = Uri.fromFile(new File(rutaImagen3));
+        UploadTask uploadTask = mountainImagesRef3.putFile(uri);
+
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                //System.out.println("Upload is " + progress + "% done");
+                //Toast.makeText(getApplicationContext(),"Cargando Imagen PLACA " + progress + "%", Toast.LENGTH_SHORT).show();
+                pd4.show();
+            }
+        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+                //Toast.makeText(AccesoActivity.this,"Pausado",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(RondinIncidencias.this, "Fallado", Toast.LENGTH_SHORT).show();
+                pd4.dismiss();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                eliminarFotoDirectorioLocal(nombreImagen3);
+                pd4.dismiss();
 
             }
         });
+
+
+    }
+
+    public void eliminarFotoDirectorioLocal(String nombreFoto){
+        String tempfilepath ="";
+        File externalFilesDir = getExternalFilesDir(null);
+        if (externalFilesDir != null) {
+            tempfilepath = externalFilesDir.getAbsolutePath();
+            try {
+                File grTempFiles = new File(tempfilepath);
+                if (grTempFiles.exists()) {
+                    File[] files = grTempFiles.listFiles();
+                    if (grTempFiles.isDirectory() && files != null) {
+                        int numofFiles = files.length;
+
+                        for (int i = 0; i < numofFiles; i++) {
+                            try {
+                                File path = new File(files[i].getAbsolutePath());
+                                if (!path.isDirectory() && path.getName().equals(nombreFoto)) {
+                                    path.delete();
+                                }
+                            }catch (Exception e){
+                                Log.e("EliminarFoto", e.toString());
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("ErrorFile", "deleteDirectory: Failed to onCreate directory  " + tempfilepath + " for an unknown reason.");
+
+            }
+
+        }else {
+        }
     }
 
     private void terminar() {
+
+        if (Global_info.getCantidadFotosEnEsperaEnSegundoPlano(RondinIncidencias.this) > 0){
+            if (!servicioFotos()) {
+                Intent cargarFotos = new Intent(RondinIncidencias.this, subirFotos.class);
+                startService(cargarFotos);
+            }
+        }
+
         pd.dismiss();
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(RondinIncidencias.this);
@@ -1247,12 +1301,6 @@ public class RondinIncidencias  extends mx.linkom.caseta_los_cabos.Menu{
                 .setMessage("Registro de Incidencia Exitosa")
                 .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
-                        if (!servicioFotos()) {
-                            Intent cargarFotos = new Intent(RondinIncidencias.this, subirFotos.class);
-                            startService(cargarFotos);
-                        }
-
                         /*if (!Offline){
                             //Solo ejecutar si el servicio no se esta ejecutando
                             if (!servicioFotos()) {

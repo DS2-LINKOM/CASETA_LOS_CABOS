@@ -1,6 +1,10 @@
 package mx.linkom.caseta_los_cabos.offline;
 
 import android.app.Application;
+import android.content.Context;
+import android.database.Cursor;
+
+import mx.linkom.caseta_los_cabos.offline.Database.UrisContentProvider;
 
 public class Global_info extends Application {
     private static boolean INTERNET_DISPOSITIVO = false;
@@ -15,6 +19,29 @@ public class Global_info extends Application {
     private static String TEXTO3_IMAGENES = "Fotografía no disponible en offline";
     //private static String URL = "http://192.168.0.110/android/demoCaseta/";
     private static String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/off-line/";
+
+    private static int LIMITE_FOTOS_SEGUNDO_PLANO = 30;
+
+    public static int getLimiteFotosSegundoPlano() {
+        return LIMITE_FOTOS_SEGUNDO_PLANO;
+    }
+
+    public static int getCantidadFotosEnEsperaEnSegundoPlano(Context context) {
+        Cursor cursoFotos = null;
+        int cantidadFotos = 0;
+
+        cursoFotos = context.getContentResolver().query(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, null, "cantidad", null, null);
+
+        if (cursoFotos.moveToFirst()) {
+            do {
+                cantidadFotos = cursoFotos.getInt(0);
+            } while (cursoFotos.moveToNext());
+        }
+
+        cursoFotos.close();
+
+        return cantidadFotos;
+    }
 
     public static String getTexto3Imagenes() {
         return TEXTO3_IMAGENES;

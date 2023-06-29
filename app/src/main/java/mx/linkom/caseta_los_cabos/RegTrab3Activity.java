@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
@@ -79,9 +81,9 @@ public class RegTrab3Activity extends mx.linkom.caseta_los_cabos.Menu {
     Uri uri_img,uri_img2,uri_img3;
     int foto1,foto2,foto3;
     String nfoto1,nfoto2,nfoto3;
-    ProgressDialog pd,pd2,pd3;
+    ProgressDialog pd, pd2, pd3, pd4, pd5;
 
-    String rutaImagen1, rutaImagen2, rutaImagen3, nombreImagen1, nombreImagen2, nombreImagen3;
+    String rutaImagen1="", rutaImagen2="", rutaImagen3="", rutaImagenPlaca="", nombreImagen1="", nombreImagen2="", nombreImagen3="", nombreImagenPlaca="";
     TextView txtFoto1, txtFoto2, txtFoto3;
 
     @Override
@@ -164,14 +166,20 @@ public class RegTrab3Activity extends mx.linkom.caseta_los_cabos.Menu {
                 imgFoto3();
             }
         });
-        pd= new ProgressDialog(this);
+        pd = new ProgressDialog(this);
         pd.setMessage("Registrando...");
 
-        pd2= new ProgressDialog(this);
-        pd2.setMessage("Subiendo Imagen 2...");
+        pd2 = new ProgressDialog(this);
+        pd2.setMessage("Subiendo Imagenes.");
 
-        pd3= new ProgressDialog(this);
-        pd3.setMessage("Subiendo Imagen 3...");
+        pd3 = new ProgressDialog(this);
+        pd3.setMessage("Subiendo Imagenes..");
+
+        pd4 = new ProgressDialog(this);
+        pd4.setMessage("Subiendo Imagenes...");
+
+        pd5 = new ProgressDialog(this);
+        pd5.setMessage("Subiendo Imagenes....");
     }
 
     //ALETORIO
@@ -327,6 +335,7 @@ public class RegTrab3Activity extends mx.linkom.caseta_los_cabos.Menu {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -690,22 +699,31 @@ public class RegTrab3Activity extends mx.linkom.caseta_los_cabos.Menu {
 
                 }else {
 
-                    if(foto1==1){
-                        ContentValues val_img1 = ValuesImagen(nombreImagen1, Conf.getPin() + "/trabajadores/" + nombreImagen1.trim(), rutaImagen1);
-                        Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
-                        //upload1();
-                    }
+                    if (Global_info.getCantidadFotosEnEsperaEnSegundoPlano(RegTrab3Activity.this) >= Global_info.getLimiteFotosSegundoPlano()){
+                        if(foto1==1){
+                            upload1();
+                        }
+                        if(foto2==2){
+                            upload2();
+                        }
+                        if(foto3==3){
+                            upload3();
+                        }
+                    }else {
+                        if(foto1==1){
+                            ContentValues val_img1 = ValuesImagen(nombreImagen1, Conf.getPin() + "/trabajadores/" + nombreImagen1.trim(), rutaImagen1);
+                            Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
+                        }
 
-                    if(foto2==2){
-                        ContentValues val_img1 = ValuesImagen(nombreImagen2, Conf.getPin() + "/trabajadores/" + nombreImagen2.trim(), rutaImagen2);
-                        Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
-                        //upload2();
-                    }
+                        if(foto2==2){
+                            ContentValues val_img1 = ValuesImagen(nombreImagen2, Conf.getPin() + "/trabajadores/" + nombreImagen2.trim(), rutaImagen2);
+                            Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
+                        }
 
-                    if(foto3==3){
-                        ContentValues val_img1 = ValuesImagen(nombreImagen3, Conf.getPin() + "/trabajadores/" + nombreImagen3.trim(), rutaImagen3);
-                        Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
-                        //upload3();
+                        if(foto3==3){
+                            ContentValues val_img1 = ValuesImagen(nombreImagen3, Conf.getPin() + "/trabajadores/" + nombreImagen3.trim(), rutaImagen3);
+                            Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
+                        }
                     }
 
                     Finalizar();
@@ -782,20 +800,21 @@ public class RegTrab3Activity extends mx.linkom.caseta_los_cabos.Menu {
         return values;
     }
 
-    public void upload1(){
+    public void upload1() {
+
+        Log.e("upload", "upload1()");
 
         StorageReference mountainImagesRef = null;
-        mountainImagesRef = storageReference.child(Conf.getPin()+"/trabajadores/app"+anio+mes+dia+Nombre.getText().toString()+"-"+numero_aletorio+".png");
+        mountainImagesRef = storageReference.child(Conf.getPin() + "/trabajadores/" + nombreImagen1);
 
-
-        UploadTask uploadTask = mountainImagesRef.putFile(uri_img);
-
+        Uri uri  = Uri.fromFile(new File(rutaImagen1));
+        UploadTask uploadTask = mountainImagesRef.putFile(uri);
 
         // Listen for state changes, errors, and completion of the upload.
         uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                pd.show(); // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                pd2.show(); // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 //System.out.println("Upload is " + progress + "% done");
                 // Toast.makeText(getApplicationContext(),"Cargando Imagen INE " + progress + "%", Toast.LENGTH_SHORT).show();
 
@@ -808,64 +827,27 @@ public class RegTrab3Activity extends mx.linkom.caseta_los_cabos.Menu {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(RegTrab3Activity.this,"Fallado",Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                pd.dismiss();
-
-            }
-        });
-    }
-
-    public void upload2(){
-
-
-        StorageReference mountainImagesRef2 = null;
-        mountainImagesRef2 = storageReference.child(Conf.getPin()+"/trabajadores/app"+anio+mes+dia+Nombre.getText().toString()+"-"+numero_aletorio2+".png");
-
-
-        final UploadTask uploadTask = mountainImagesRef2.putFile(uri_img2);
-
-        // Listen for state changes, errors, and completion of the upload.
-        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                //System.out.println("Upload is " + progress + "% done");
-                //Toast.makeText(getApplicationContext(),"Cargando Imagen PLACA " + progress + "%", Toast.LENGTH_SHORT).show();
-                pd2.show();
-            }
-        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-                //Toast.makeText(AccesoActivity.this,"Pausado",Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(RegTrab3Activity.this,"Fallado",Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(RegTrab3Activity.this, "Fallado", Toast.LENGTH_SHORT).show();
                 pd2.dismiss();
             }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                eliminarFotoDirectorioLocal(nombreImagen1);
+                pd2.dismiss();
+
+            }
         });
-
-
     }
 
+    public void upload2() {
 
-    public void upload3(){
+        StorageReference mountainImagesRef2 = null;
+        mountainImagesRef2 = storageReference.child(Conf.getPin() + "/trabajadores/" + nombreImagen2);
 
+        Uri uri  = Uri.fromFile(new File(rutaImagen2));
+        UploadTask uploadTask = mountainImagesRef2.putFile(uri);
 
-        StorageReference mountainImagesRef3 = null;
-        mountainImagesRef3 = storageReference.child(Conf.getPin()+"/trabajadores/app"+anio+mes+dia+Nombre.getText().toString()+"-"+numero_aletorio3+".png");
-
-
-        final UploadTask uploadTask = mountainImagesRef3.putFile(uri_img3);
 
         // Listen for state changes, errors, and completion of the upload.
         uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -884,11 +866,13 @@ public class RegTrab3Activity extends mx.linkom.caseta_los_cabos.Menu {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(RegTrab3Activity.this,"Fallado",Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegTrab3Activity.this, "Fallado", Toast.LENGTH_SHORT).show();
+                pd3.dismiss();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                eliminarFotoDirectorioLocal(nombreImagen2);
                 pd3.dismiss();
             }
         });
@@ -896,7 +880,87 @@ public class RegTrab3Activity extends mx.linkom.caseta_los_cabos.Menu {
 
     }
 
+    public void upload3() {
+
+        StorageReference mountainImagesRef3 = null;
+        mountainImagesRef3 = storageReference.child(Conf.getPin() + "/trabajadores/" + nombreImagen3);
+
+        Uri uri  = Uri.fromFile(new File(rutaImagen3));
+        UploadTask uploadTask = mountainImagesRef3.putFile(uri);
+
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                //System.out.println("Upload is " + progress + "% done");
+                //Toast.makeText(getApplicationContext(),"Cargando Imagen PLACA " + progress + "%", Toast.LENGTH_SHORT).show();
+                pd4.show();
+            }
+        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+                //Toast.makeText(AccesoActivity.this,"Pausado",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(RegTrab3Activity.this, "Fallado", Toast.LENGTH_SHORT).show();
+                pd4.dismiss();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                eliminarFotoDirectorioLocal(nombreImagen3);
+                pd4.dismiss();
+
+            }
+        });
+
+
+    }
+
+    public void eliminarFotoDirectorioLocal(String nombreFoto){
+        String tempfilepath ="";
+        File externalFilesDir = getExternalFilesDir(null);
+        if (externalFilesDir != null) {
+            tempfilepath = externalFilesDir.getAbsolutePath();
+            try {
+                File grTempFiles = new File(tempfilepath);
+                if (grTempFiles.exists()) {
+                    File[] files = grTempFiles.listFiles();
+                    if (grTempFiles.isDirectory() && files != null) {
+                        int numofFiles = files.length;
+
+                        for (int i = 0; i < numofFiles; i++) {
+                            try {
+                                File path = new File(files[i].getAbsolutePath());
+                                if (!path.isDirectory() && path.getName().equals(nombreFoto)) {
+                                    path.delete();
+                                }
+                            }catch (Exception e){
+                                Log.e("EliminarFoto", e.toString());
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("ErrorFile", "deleteDirectory: Failed to onCreate directory  " + tempfilepath + " for an unknown reason.");
+
+            }
+
+        }else {
+        }
+    }
+
     public void Finalizar(){
+        if (Global_info.getCantidadFotosEnEsperaEnSegundoPlano(RegTrab3Activity.this) > 0){
+            //Solo ejecutar si el servicio no se esta ejecutando
+            if (!servicioFotos()) {
+                Intent cargarFotos = new Intent(RegTrab3Activity.this, subirFotos.class);
+                startService(cargarFotos);
+            }
+        }
         pd.dismiss();
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(RegTrab3Activity.this);
@@ -905,12 +969,6 @@ public class RegTrab3Activity extends mx.linkom.caseta_los_cabos.Menu {
                 .setMessage("Modificación Exitosa")
                 .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        //Solo ejecutar si el servicio no se esta ejecutando
-                        if (!servicioFotos()) {
-                            Intent cargarFotos = new Intent(RegTrab3Activity.this, subirFotos.class);
-                            startService(cargarFotos);
-                        }
-
                         Intent i = new Intent(getApplicationContext(), RegTrab2Activity.class);
                         startActivity(i);
                         finish();
