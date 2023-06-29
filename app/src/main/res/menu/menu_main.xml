@@ -21,14 +21,14 @@
 
                 />
 
-    <item
+    <!--<item
         android:id="@+id/subirFotos"
         android:title="Fotos pendientes"
         android:visibility="visible"
         android:icon="@drawable/subir_fotos_icon"
         app:actionLayout="@id/Inicio"
         app:showAsAction="always"
-        tools:visibility="visible" />
+        tools:visibility="visible" />-->
 
     <item
         android:id="@+id/Cerrar"
@@ -40,7 +40,7 @@
     <item
         android:id="@+id/Versión"
         android:icon="@drawable/ic_info"
-        android:title="Linkom © v.24.25.37"
+        android:title="Linkom © v.24.25.39"
         app:showAsAction="ifRoom"
         />
 

@@ -95,13 +95,15 @@ public class Menu extends AppCompatActivity implements PopupMenu.OnMenuItemClick
         }else if (id == R.id.Usuario) {
 
             return true;
-        }else if (id == R.id.subirFotos) {
+        }
+
+        /*else if (id == R.id.subirFotos) {
             Intent i = new Intent(getApplication(), fotosPendientes.class);
             startActivity(i);
             finish();
 
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

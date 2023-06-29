@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/likom/Documents/MIGUE/Desarrollo mobile/Android Studio/APPS OFFLINE/APP CASETA LOS CABOS/CASETA_LOS_CABOS/app/src/main/res/drawable-xxhdpi/banner_background.xml" value="0.176" />
         <entry key="..\:/Users/likom/Documents/MIGUE/Desarrollo mobile/Android Studio/APPS OFFLINE/APP CASETA LOS CABOS/CASETA_LOS_CABOS/app/src/main/res/layout/acitivity_listagrupalentrada.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/likom/Documents/MIGUE/Desarrollo mobile/Android Studio/APPS OFFLINE/APP CASETA LOS CABOS/CASETA_LOS_CABOS/app/src/main/res/layout/acitivity_listagrupalsalida.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/likom/Documents/MIGUE/Desarrollo mobile/Android Studio/APPS OFFLINE/APP CASETA LOS CABOS/CASETA_LOS_CABOS/app/src/main/res/layout/activity_accesos.xml" value="0.20416666666666666" />
@@ -37,6 +38,7 @@
         <entry key="..\:/Users/likom/Documents/MIGUE/Desarrollo mobile/Android Studio/APPS OFFLINE/APP CASETA LOS CABOS/CASETA_LOS_CABOS/app/src/main/res/layout/activity_rondinincidencias.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/likom/Documents/MIGUE/Desarrollo mobile/Android Studio/APPS OFFLINE/APP CASETA LOS CABOS/CASETA_LOS_CABOS/app/src/main/res/layout/activity_rondinincidencias_qr.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/likom/Documents/MIGUE/Desarrollo mobile/Android Studio/APPS OFFLINE/APP CASETA LOS CABOS/CASETA_LOS_CABOS/app/src/main/res/layout/activity_visitasrecepentradasdetalle.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/likom/Documents/MIGUE/Desarrollo mobile/Android Studio/APPS OFFLINE/APP CASETA LOS CABOS/CASETA_LOS_CABOS/app/src/main/res/menu/menu_main.xml" value="0.22" />
       </map>
     </option>
   </component>
