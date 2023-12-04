@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import mx.linkom.caseta_los_cabos.Animaciones.AnimationUtil;
 import mx.linkom.caseta_los_cabos.adaptadores.ModuloClassGrid;
 import mx.linkom.caseta_los_cabos.adaptadores.adaptador_Modulo;
 import mx.linkom.caseta_los_cabos.offline.Database.UrisContentProvider;
@@ -52,7 +54,7 @@ public class DashboardActivity extends  mx.linkom.caseta_los_cabos.Menu {
     private FirebaseAuth fAuth;
     private Configuracion Conf;
     JSONArray ja1,ja2,ja3;
-    TextView perma,sali,entr,nombre;
+    TextView perma,sali,entr,nombre, textViewVersionDisponible;
     TextView permaT,saliT,entrT;
     String var1,var2,var3,var4,var5;
     String var6,var7,var8,var9,var10;
@@ -71,7 +73,7 @@ public class DashboardActivity extends  mx.linkom.caseta_los_cabos.Menu {
         }
     }
 
-    ConstraintLayout constLayoutAnuncioFotosPendientes;
+    ConstraintLayout anuncioVersiones, constLayoutAnuncioFotosPendientes;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -106,6 +108,10 @@ public class DashboardActivity extends  mx.linkom.caseta_los_cabos.Menu {
                 finish();
             }
         });
+
+        textViewVersionDisponible = (TextView)findViewById(R.id.textViewVersionDisponible);
+        anuncioVersiones = (ConstraintLayout) findViewById(R.id.constLayoutAnuncioVersiones);
+
 
         /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetDashboard);
 
@@ -356,6 +362,43 @@ public class DashboardActivity extends  mx.linkom.caseta_los_cabos.Menu {
                 if (response.length()>0){
                     try {
                         ja2 = new JSONArray(response);
+
+                        Log.e("version", ja3.getString(16) + Global.getVersionApp().trim().equals(ja3.getString(16).trim()));
+
+
+                        if (!Global.getVersionApp().trim().equals(ja3.getString(16).trim())){
+                            anuncioVersiones.setVisibility(View.VISIBLE);
+                            textViewVersionDisponible.setText("Versión: Community Cabo " + ja3.getString(16));
+                            AnimationUtil.startAnimation(DashboardActivity.this, anuncioVersiones);
+
+                            anuncioVersiones.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DashboardActivity.this);
+                                    alertDialogBuilder.setTitle("Nueva actualización disponible");
+                                    alertDialogBuilder.setMessage("Caseta Community Cabo: \n\n1.- Clic en actualizar \n2.- Una vez descargado el archivo .apk cerrar sesion y actualizar app");
+
+                                    alertDialogBuilder.setPositiveButton("Actualizar", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            String url = null;
+                                            try {
+                                                url = "https://descargas.linkom.mx/apk/Communitycabo_"+ ja3.getString(16).replace(".","").trim() +".apk";
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                            startActivity(intent);
+                                        }
+                                    });
+
+                                    alertDialogBuilder.create().show();
+
+                                }
+                            });
+                        }else {
+                            anuncioVersiones.setVisibility(View.GONE);
+                        }
 
                         /*if (Global_info.getCantidadFotosEnEsperaEnSegundoPlano(DashboardActivity.this) >= Global_info.getLimiteFotosSegundoPlano()) constLayoutAnuncioFotosPendientes.setVisibility(View.VISIBLE);
                         else constLayoutAnuncioFotosPendientes.setVisibility(View.GONE);*/

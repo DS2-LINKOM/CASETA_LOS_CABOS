@@ -383,25 +383,19 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/divider"
-                    ></LinearLayout>
-
                 <!-- Empieza placa -->
                 <LinearLayout
-                    android:id="@+id/espacio1Placa"
+                    android:id="@+id/LinLayEspacio1Placa"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="@color/divider"
                     android:orientation="vertical"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     >
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/FotoPlaca"
+                    android:id="@+id/LinLayTituloPlaca"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -409,10 +403,10 @@
                     android:paddingRight="16dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <TextView
-                        android:id="@+id/nombre_fotoPlaca"
+                        android:id="@+id/textViewNombreFotoPlaca"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
@@ -435,7 +429,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/espacioPlaca"
+                    android:id="@+id/LinLayEspacio2Placa"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="@color/divider"
@@ -443,7 +437,7 @@
                     android:visibility="visible"></LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/FotoPlacaView"
+                    android:id="@+id/LinLayFotoPlacaView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -451,10 +445,10 @@
                     android:paddingRight="16dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <TextView
-                        android:id="@+id/txtFotoPlacas"
+                        android:id="@+id/txtFotoCargandoPlacas"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -467,7 +461,7 @@
                         android:textSize="@dimen/fontSize" />
 
                     <ImageView
-                        android:id="@+id/viewPlaca"
+                        android:id="@+id/ImageViewPlaca"
                         android:layout_width="match_parent"
                         android:layout_height="161dp"
                         android:layout_marginStart="10dp"
@@ -476,16 +470,14 @@
                         />
                 </LinearLayout>
 
+                <!--TERMINA PLACA-->
+
                 <LinearLayout
-                    android:id="@+id/espacio2Placa"
+                    android:id="@+id/LinLayEspacio3Placa"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="@color/divider"
-                    android:orientation="vertical"
-                    android:visibility="visible"
-                    >
-                </LinearLayout>
-                <!-- Termina placa -->
+                    ></LinearLayout>
 
 
                 <LinearLayout

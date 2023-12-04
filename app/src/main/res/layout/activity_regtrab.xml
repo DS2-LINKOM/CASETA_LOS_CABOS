@@ -73,68 +73,6 @@
                 android:orientation="vertical">
 
 
-                  <LinearLayout
-                      android:id="@+id/clave"
-                      android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp">
-
-
-                    <TextView
-                        android:id="@+id/colono"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:text="Clave de Elector :"
-                        android:textColor="@color/fontColorGris"
-                        android:textSize="@dimen/fontSize"
-                        android:fontFamily="@font/fontNegritaC"
-                        />
-
-                    <customfonts.MyEditText
-                        android:id="@+id/setColono"
-                        android:fontFamily="@font/fontNormalC"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/fontColorNegro"
-                        android:textSize="@dimen/fontSize"
-                        />
-
-                    <Button
-                        android:id="@+id/buscar"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@drawable/boton_descargar"
-                        android:gravity="center"
-                        android:text="Buscar"
-                        android:textColor="@color/FormTextColor"
-                        android:textSize="@dimen/fontSize"
-                        android:fontFamily="@font/fontNegritaC"
-                        />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/divider"
-                    ></LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/registro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:orientation="vertical">
-
-                <!---aqui-->
                 <LinearLayout
                     android:id="@+id/Tipo"
                     android:layout_width="match_parent"
@@ -298,65 +236,25 @@
 
 
                     <TextView
-                        android:id="@+id/puesto"
+                        android:id="@+id/tag"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:text="Puesto: (Opcional)"
+                        android:text="Tag (Opcional):"
                         android:textColor="@color/fontColorGris"
                         android:textSize="@dimen/fontSize"
                         android:fontFamily="@font/fontNegritaC"
                         />
 
                     <customfonts.MyEditText
-                        android:id="@+id/setPuesto"
+                        android:id="@+id/setTag"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/fontNormalC"
                         android:textColor="@color/fontColorNegro"
                         android:textSize="@dimen/fontSize" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/divider"
-                    ></LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp">
-
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:text="Dirección: (Opcional)"
-                        android:textColor="@color/fontColorGris"
-                        android:textSize="@dimen/fontSize"
-                        android:fontFamily="@font/fontNegritaC"
-                        />
-
-                    <customfonts.MyEditText
-                        android:id="@+id/setDire"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:lines="3"
-                        android:fontFamily="@font/fontNormalC"
-                        android:textColor="@color/fontColorNegro"
-                        android:textSize="@dimen/fontSize" />
-                    />
 
                 </LinearLayout>
 
@@ -421,11 +319,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
+                        android:fontFamily="@font/fontNegritaC"
                         android:text="Correo: (Opcional)"
                         android:textColor="@color/fontColorGris"
-                        android:textSize="@dimen/fontSize"
-                        android:fontFamily="@font/fontNegritaC"
-                        />
+                        android:textSize="@dimen/fontSize" />
 
                     <customfonts.MyEditText
                         android:id="@+id/setCorreo"
@@ -475,7 +372,7 @@
                         android:fontFamily="@font/fontNormalC"
                         android:textColor="@color/fontColorNegro"
                         android:textSize="@dimen/fontSize" />
-                        />
+                    />
 
                 </LinearLayout>
 
@@ -501,7 +398,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="Foto:"
+                        android:text="Foto"
                         android:layout_gravity="center"
                         android:textColor="@color/fontColorGris"
                         android:textSize="@dimen/fontSize"
@@ -576,7 +473,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="INE: (Opcional)"
+                        android:text="INE"
                         android:layout_gravity="center"
                         android:textColor="@color/fontColorGris"
                         android:textSize="@dimen/fontSize"
@@ -635,80 +532,6 @@
                     android:visibility="gone">
                 </LinearLayout>
 
-                <!---IMAGEN-->
-                <LinearLayout
-                    android:id="@+id/Foto3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/nombre_foto3"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="Otro: (Opcional)"
-                        android:layout_gravity="center"
-                        android:textColor="@color/fontColorGris"
-                        android:textSize="@dimen/fontSize"
-                        android:fontFamily="@font/fontNegritaC"
-                        />
-
-                    <Button
-                        android:id="@+id/btn_foto3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@drawable/boton_descargar"
-                        android:gravity="center"
-                        android:text="TOMAR FOTO"
-                        android:textColor="@color/fontColorNegro"
-                        android:textSize="@dimen/fontSize"
-                        android:fontFamily="@font/fontNegritaC"
-                        />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/espacio6"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/divider"
-                    android:orientation="vertical"
-                    android:visibility="gone"></LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/Foto3View"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:id="@+id/view3"
-                        android:layout_width="match_parent"
-                        android:layout_height="161dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp" />
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/espacio7"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/divider"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/registrar1"
                     android:layout_width="match_parent"
@@ -755,9 +578,6 @@
                     android:visibility="visible"
                     >
                 </LinearLayout>
-                <!---aqui-->
-            </LinearLayout>
-
 
 
             </LinearLayout>

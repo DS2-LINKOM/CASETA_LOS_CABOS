@@ -83,6 +83,8 @@ public class AccesosTrabajadorActivity extends mx.linkom.caseta_los_cabos.Menu {
 
             @Override
             public void onResponse(String response) {
+
+                Log.e("InfoTrabjador", response);
                 response = response.replace("][",",");
                 if (response.length()>0){
                     try {
@@ -225,7 +227,7 @@ public class AccesosTrabajadorActivity extends mx.linkom.caseta_los_cabos.Menu {
         try {
             Calendar c = Calendar.getInstance();
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = (Date)formatter.parse(ja1.getString(16));
+            Date date = (Date)formatter.parse(ja1.getString(17));
 
             FechaA = Calendar.getInstance().getTime();
 
@@ -233,7 +235,7 @@ public class AccesosTrabajadorActivity extends mx.linkom.caseta_los_cabos.Menu {
             if(c.getTime().before(date)) {
 
                 //Acceso de Trabajador
-                if (ja1.getString(19).equals("1")) {
+                if (ja1.getString(22).equals("1")) {
 
                     if (ja2.getString(8).equals("2") || ja2.getString(8).equals("0")) {
 
@@ -243,7 +245,7 @@ public class AccesosTrabajadorActivity extends mx.linkom.caseta_los_cabos.Menu {
 
                         Nombre.setText(ja1.getString(6));
                         Puesto.setText(ja1.getString(12));
-                        Vigencia.setText(ja1.getString(16));
+                        Vigencia.setText(ja1.getString(17));
 
                         String cajon="";
                         if(ja3.getString(0).equals("0")){

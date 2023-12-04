@@ -46,7 +46,8 @@ public class RegTrab2Activity extends mx.linkom.caseta_los_cabos.Menu {
         Trabajador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), RegTrabActivity.class);
+                //Intent i = new Intent(getApplicationContext(), RegTrabActivity.class);
+                Intent i = new Intent(getApplication(), RegTrabValidar.class);
                 startActivity(i);
                 finish();
             }

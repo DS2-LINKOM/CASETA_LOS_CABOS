@@ -172,14 +172,14 @@ public class BitacoraTrabajadorActivity extends mx.linkom.caseta_los_cabos.Menu 
         try {
             Calendar c = Calendar.getInstance();
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = (Date)formatter.parse(ja1.getString(16));
+            Date date = (Date)formatter.parse(ja1.getString(17));
 
 
             //Vigencia de Trabajador
             if(c.getTime().before(date)) {
 
                 //Acceso de Trabajador
-                if (ja1.getString(19).equals("1")) {
+                if (ja1.getString(22).equals("1")) {
 
 
                         rlVista.setVisibility(View.GONE);
@@ -188,7 +188,7 @@ public class BitacoraTrabajadorActivity extends mx.linkom.caseta_los_cabos.Menu 
 
                         Nombre.setText(ja1.getString(6));
                         Puesto.setText(ja1.getString(12));
-                        Vigencia.setText(ja1.getString(16));
+                        Vigencia.setText(ja1.getString(17));
 
                     String cajon="";
                     if(ja2.getString(0).equals("0")){

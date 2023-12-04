@@ -37,6 +37,9 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateVisible|adjustResize">
         <activity
+            android:name=".RegTrabValidar"
+            android:exported="false" />
+        <activity
             android:name=".fotosPendientes"
             android:exported="false" />
 

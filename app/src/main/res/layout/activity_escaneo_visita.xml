@@ -330,7 +330,7 @@
                 ></LinearLayout>
 
 
-                <!--Inicio de placa -->
+            <!--Inicio de placa -->
 
             <LinearLayout android:id="@+id/LayoutBtnPlaca"
                 android:layout_width="match_parent"

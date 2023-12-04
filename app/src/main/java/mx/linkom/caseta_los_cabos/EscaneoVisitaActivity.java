@@ -158,12 +158,6 @@ public class EscaneoVisitaActivity extends mx.linkom.caseta_los_cabos.Menu {
 
         menu();
 
-        /*if (Offline){
-            menuOffline();
-        }else{
-            menu();
-        }*/
-
         Registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -305,6 +299,111 @@ public class EscaneoVisitaActivity extends mx.linkom.caseta_los_cabos.Menu {
     int mes = fecha.get(Calendar.MONTH) + 1;
     int dia = fecha.get(Calendar.DAY_OF_MONTH);
 
+    public void menu() {
+        String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/menu.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("][", ",");
+                if (response.length() > 0) {
+                    try {
+                        ja5 = new JSONArray(response);
+                        submenu(ja5.getString(0));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("TAG", "Error: " + error.toString());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id_residencial", Conf.getResid());
+
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void submenu(final String id_app) {
+        String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/menu_5.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                Log.e("respuesta", response);
+                if (response.equals("error")) {
+                    int $arreglo[] = {0};
+                    try {
+                        ja6 = new JSONArray($arreglo);
+                        Global.setFotoPlaca(false);
+                        imagenes();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    response = response.replace("][", ",");
+                    if (response.length() > 0) {
+                        try {
+                            ja6 = new JSONArray(response);
+                            Log.e("RESP2", ja6.getString(8));
+                            Log.e("RESP2", ja6.getString(9));
+                            Log.e("RESP2", ja6.getString(10));
+                            Log.e("RESP2", ja6.getString(11));
+                            if (ja6.getString(10).trim().equals("1")){
+                                LayoutBtnPlaca.setVisibility(View.VISIBLE);
+                                Global.setFotoPlaca(true);
+                            }else {
+                                Global.setFotoPlaca(false);
+                            }
+                            imagenes();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("TAG", "Error: " + error.toString());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id_app", id_app.trim());
+                params.put("id_residencial", Conf.getResid());
+
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void imagenes(){
+
+        try {
+            if (ja6.getString(10).equals("1")) {
+                LayoutBtnPlaca.setVisibility(View.VISIBLE);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
     public void Validacion() {
@@ -438,177 +537,6 @@ public class EscaneoVisitaActivity extends mx.linkom.caseta_los_cabos.Menu {
                 }
             }
         });
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void menuOffline() {
-        Log.e("Metodo ", "menuOffline");
-        try {
-            Cursor cursoAppCaseta = getContentResolver().query(UrisContentProvider.URI_CONTENIDO_APP_CASETA, null, null, null);
-
-            ja5 = new JSONArray();
-
-            if (cursoAppCaseta.moveToFirst()){
-                ja5.put(cursoAppCaseta.getString(0));
-                ja5.put(cursoAppCaseta.getString(1));
-                ja5.put(cursoAppCaseta.getString(2));
-                ja5.put(cursoAppCaseta.getString(3));
-                ja5.put(cursoAppCaseta.getString(4));
-                ja5.put(cursoAppCaseta.getString(5));
-                ja5.put(cursoAppCaseta.getString(6));
-                ja5.put(cursoAppCaseta.getString(7));
-                ja5.put(cursoAppCaseta.getString(8));
-                ja5.put(cursoAppCaseta.getString(9));
-                ja5.put(cursoAppCaseta.getString(10));
-                ja5.put(cursoAppCaseta.getString(11));
-                ja5.put(cursoAppCaseta.getString(12));
-
-                submenuOffline(ja5.getString(0));
-
-            }
-            cursoAppCaseta.close();
-
-        }catch (Exception ex){
-            System.out.println(ex.toString());
-        }
-    }
-
-    public void menu() {
-        String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/menu_3.php?bd_name=" + Conf.getBd() + "&bd_user=" + Conf.getBdUsu() + "&bd_pwd=" + Conf.getBdCon();
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-
-                Log.e("PLACA", response);
-
-                response = response.replace("][", ",");
-                if (response.length() > 0) {
-                    try {
-                        ja5 = new JSONArray(response);
-                        submenu(ja5.getString(0));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("TAG", "Error: " + error.toString());
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("id_residencial", Conf.getResid());
-
-                return params;
-            }
-        };
-        requestQueue.add(stringRequest);
-    }
-
-    public void submenuOffline(final String id_app) {
-        Log.e("info", "submenu offline");
-
-        try {
-            Cursor cursoAppCaseta = getContentResolver().query(UrisContentProvider.URI_CONTENIDO_APPCASETAIMA, null, null, null, null);
-
-            ja6 = new JSONArray();
-
-            if (cursoAppCaseta.moveToFirst()) {
-                ja6.put(cursoAppCaseta.getString(0));
-                ja6.put(cursoAppCaseta.getString(1));
-                ja6.put(cursoAppCaseta.getString(2));
-                ja6.put(cursoAppCaseta.getString(3));
-                ja6.put(cursoAppCaseta.getString(4));
-                ja6.put(cursoAppCaseta.getString(5));
-                ja6.put(cursoAppCaseta.getString(6));
-                ja6.put(cursoAppCaseta.getString(7));
-                ja6.put(cursoAppCaseta.getString(8));
-                ja6.put(cursoAppCaseta.getString(9));
-                ja6.put(cursoAppCaseta.getString(10));
-                ja6.put(cursoAppCaseta.getString(11));
-                ja6.put(cursoAppCaseta.getString(12));
-
-                imagenes();
-            } else {
-                int $arreglo[] = {0};
-                ja6 = new JSONArray($arreglo);
-                imagenes();
-            }
-            cursoAppCaseta.close();
-
-        } catch (Exception ex) {
-            System.out.println(ex.toString());
-        }
-    }
-
-    public void submenu(final String id_app) {
-        String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/menu_4.php?bd_name=" + Conf.getBd() + "&bd_user=" + Conf.getBdUsu() + "&bd_pwd=" + Conf.getBdCon();
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-
-                Log.e("PLACA", response);
-
-                if (response.equals("error")) {
-                    int $arreglo[] = {0};
-                    try {
-                        ja6 = new JSONArray($arreglo);
-                        imagenes();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    response = response.replace("][", ",");
-                    if (response.length() > 0) {
-                        try {
-                            ja6 = new JSONArray(response);
-                            imagenes();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("TAG", "Error: " + error.toString());
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("id_app", id_app.trim());
-                params.put("id_residencial", Conf.getResid());
-
-                return params;
-            }
-        };
-        requestQueue.add(stringRequest);
-    }
-
-
-    public void imagenes(){
-
-        try {
-            Log.e("FOTOPLACA", ja6.getString(10));
-            Log.e("FOTOPLACA", ja6.getString(9));
-            if (ja6.getString(9).equals("1")) {
-                LayoutBtnPlaca.setVisibility(View.VISIBLE);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
     }
 
 
@@ -1498,6 +1426,7 @@ public class EscaneoVisitaActivity extends mx.linkom.caseta_los_cabos.Menu {
                         Intent i = new Intent(getApplicationContext(), AccesoRegistroActivity.class);
                         i.putExtra("rutaDispositivo", rutaImagenPlaca);
                         i.putExtra("nombreFotoPlaca", nombreImagenPlaca);
+                        i.putExtra("btnPlacas", "1");
                         startActivity(i);
                         finish();
                     } else {
@@ -1514,12 +1443,14 @@ public class EscaneoVisitaActivity extends mx.linkom.caseta_los_cabos.Menu {
                                     Intent i = new Intent(getApplicationContext(), PreEntradasActivity.class);
                                     i.putExtra("rutaDispositivo", rutaImagenPlaca);
                                     i.putExtra("nombreFotoPlaca", nombreImagenPlaca);
+                                    i.putExtra("btnPlacas", "1");
                                     startActivity(i);
                                     finish();
                                 }else{
                                     Intent i = new Intent(getApplicationContext(), AccesoRegistroActivity.class);
                                     i.putExtra("rutaDispositivo", rutaImagenPlaca);
                                     i.putExtra("nombreFotoPlaca", nombreImagenPlaca);
+                                    i.putExtra("btnPlacas", "1");
                                     startActivity(i);
                                     finish();
                                 }

@@ -85,7 +85,7 @@
                 android:paddingRight="16dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 >
 
                 <!--<TextView
@@ -111,6 +111,7 @@
                     android:textColor="@color/FormTextColor"
                     android:textSize="@dimen/fontSize"
                     android:fontFamily="@font/fontNegritaC"
+                    android:visibility="visible"
                     />
 
             </LinearLayout>

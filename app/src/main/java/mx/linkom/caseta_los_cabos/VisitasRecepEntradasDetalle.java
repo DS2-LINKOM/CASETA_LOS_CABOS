@@ -206,7 +206,7 @@ public class VisitasRecepEntradasDetalle extends mx.linkom.caseta_los_cabos.Menu
     }
 
     public void submenu(final String id_app) {
-        String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/menu_2.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
+        String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/menu_5.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
 
@@ -372,7 +372,7 @@ public class VisitasRecepEntradasDetalle extends mx.linkom.caseta_los_cabos.Menu
 
 
     public void salidas (final String id_visitante){
-        String URLResidencial = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/vst_php6.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
+        String URLResidencial = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/vst_php6_2.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLResidencial, new Response.Listener<String>() {
             @Override

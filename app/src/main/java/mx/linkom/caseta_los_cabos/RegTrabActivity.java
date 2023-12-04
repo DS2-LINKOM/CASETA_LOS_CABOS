@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -70,23 +71,23 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
     StorageReference storageReference;
     JSONArray ja1, ja2, ja3, ja4, ja5, ja6;
     Configuracion Conf;
-    EditText nombre,telefono,correo,comentarios,clave_e,puesto,direccion;
-    LinearLayout Foto1View,espacio2,Foto2,espacio3,Foto2View,espacio4,Foto3View,espacio7,Foto3,espacio6,registrar1,espacio5,registro,clave;
-    Button btn_foto1,btn_foto2,btn_foto3,buscar;
-    ImageView view1,view2,view3;
-    Uri uri_img,uri_img2,uri_img3;
-    int foto1,foto2,foto3,n_t;
-    String nfoto1,nfoto2,nfoto3;
-    ProgressDialog pd, pd2, pd3, pd4, pd5;
+    EditText nombre,telefono,correo,comentarios,tag;
+    LinearLayout Foto1View,espacio2,Foto2,espacio3,Foto2View,espacio4,registrar1,espacio5;
+    Button btn_foto1,btn_foto2;
+    ImageView view1,view2;
+    Uri uri_img,uri_img2;
+    int foto;
+    String nfoto1,nfoto2;
+    ProgressDialog pd, pd2, pd3;
 
     String rutaImagen1="", rutaImagen2="", rutaImagen3="", rutaImagenPlaca="", nombreImagen1="", nombreImagen2="", nombreImagen3="", nombreImagenPlaca="";
 
+    String numeroIne = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regtrab);
 
-        n_t=0;
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         Conf = new Configuracion(this);
@@ -94,25 +95,15 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
 
         btn_foto1 = (Button) findViewById(R.id.btn_foto1);
         btn_foto2 = (Button) findViewById(R.id.btn_foto2);
-        btn_foto3 = (Button) findViewById(R.id.btn_foto3);
-        buscar = (Button) findViewById(R.id.buscar);
         view1 = (ImageView) findViewById(R.id.view1);
         view2 = (ImageView) findViewById(R.id.view2);
-        view3 = (ImageView) findViewById(R.id.view3);
-        puesto = (EditText) findViewById(R.id.setPuesto);
-        direccion = (EditText) findViewById(R.id.setDire);
-        clave = (LinearLayout) findViewById(R.id.clave);
-        registro = (LinearLayout) findViewById(R.id.registro);
+
         Foto1View = (LinearLayout) findViewById(R.id.Foto1View);
         espacio2 = (LinearLayout) findViewById(R.id.espacio2);
         Foto2 = (LinearLayout) findViewById(R.id.Foto2);
         espacio3 = (LinearLayout) findViewById(R.id.espacio3);
-        Foto3 = (LinearLayout) findViewById(R.id.Foto3);
-        espacio6 = (LinearLayout) findViewById(R.id.espacio6);
         Foto2View = (LinearLayout) findViewById(R.id.Foto2View);
         espacio4 = (LinearLayout) findViewById(R.id.espacio4);
-        Foto3View = (LinearLayout) findViewById(R.id.Foto3View);
-        espacio7 = (LinearLayout) findViewById(R.id.espacio7);
         registrar1 = (LinearLayout) findViewById(R.id.registrar1);
         espacio5 = (LinearLayout) findViewById(R.id.espacio5);
 
@@ -121,11 +112,11 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
         registrar = (Button) findViewById(R.id.registrar);
         Tipo = (Spinner) findViewById(R.id.setTipo);
         Departamento = (Spinner) findViewById(R.id.setDepa);
-        clave_e = (EditText) findViewById(R.id.setColono);
         nombre = (EditText) findViewById(R.id.setNombre);
         telefono = (EditText) findViewById(R.id.setTel);
         correo = (EditText) findViewById(R.id.setCorreo);
         comentarios = (EditText) findViewById(R.id.setComen);
+        tag = (EditText) findViewById(R.id.setTag);
 
         Tipo();
         cargarDepartamento2();
@@ -137,17 +128,10 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
             }
         });
 
-        buscar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                busqueda();
-            }
-        });
-
         btn_foto1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                foto1=1;
+                foto=1;
                 imgFoto1();
 
             }
@@ -156,16 +140,8 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
         btn_foto2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                foto2=2;
+                foto=2;
                 imgFoto2();
-            }
-        });
-
-        btn_foto3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                foto3=3;
-                imgFoto3();
             }
         });
 
@@ -178,11 +154,18 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
         pd3 = new ProgressDialog(this);
         pd3.setMessage("Subiendo Imagenes..");
 
-        pd4 = new ProgressDialog(this);
-        pd4.setMessage("Subiendo Imagenes...");
 
-        pd5 = new ProgressDialog(this);
-        pd5.setMessage("Subiendo Imagenes....");
+        Intent intent = getIntent();
+        numeroIne = intent.getStringExtra("num_ine");
+
+        if (numeroIne == null) {
+            Log.e("INTENT", "No se enviaron los datos");
+            numeroIne = "";
+        }
+
+        Log.e("numero_ine", numeroIne);
+
+
     }
 
 
@@ -221,24 +204,6 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
 
     String numero_aletorio2=prime2+segundo2[numRandonsegun2]+tercer2+cuarto2[numRandoncuart2];
 
-//ALETORIO3
-
-    Random primero3 = new Random();
-    int prime3= primero3.nextInt(9);
-
-    String [] segundo3 = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
-            "k", "l", "m","n","o","p","q","r","s","t","u","v","w", "x","y","z" };
-    int numRandonsegun3 = (int) Math.round(Math.random() * 25 ) ;
-
-    Random tercero3 = new Random();
-    int tercer3= tercero3.nextInt(9);
-
-    String [] cuarto3 = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
-            "k", "l", "m","n","o","p","q","r","s","t","u","v","w", "x","y","z" };
-    int numRandoncuart3 = (int) Math.round(Math.random() * 25 ) ;
-
-    String numero_aletorio3=prime3+segundo3[numRandonsegun3]+tercer3+cuarto3[numRandoncuart3];
-
 
     Calendar fecha = Calendar.getInstance();
     int anio = fecha.get(Calendar.YEAR);
@@ -247,6 +212,8 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
 
 
     //FOTOS
+
+
     public void imgFoto1(){
         Intent intentCaptura = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intentCaptura.addFlags(intentCaptura.FLAG_GRANT_READ_URI_PERMISSION);
@@ -308,34 +275,7 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
     }
 
 
-    public void imgFoto3(){
-        Intent intentCaptura = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intentCaptura.addFlags(intentCaptura.FLAG_GRANT_READ_URI_PERMISSION);
 
-        if (intentCaptura.resolveActivity(getPackageManager()) != null) {
-            File foto=null;
-            try {
-                nombreImagen3 = "app"+anio+mes+dia+nombre.getText().toString()+"-"+numero_aletorio3+".png";
-                foto = new File(getApplication().getExternalFilesDir(null),nombreImagen3);
-                rutaImagen3 = foto.getAbsolutePath();
-            } catch (Exception ex) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(RegTrabActivity.this);
-                alertDialogBuilder.setTitle("Alerta");
-                alertDialogBuilder
-                        .setMessage("Error al capturar la foto")
-                        .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-
-                            }
-                        }).create().show();
-            }
-            if (foto != null) {
-                uri_img3= FileProvider.getUriForFile(getApplicationContext(),getApplicationContext().getPackageName()+".provider",foto);
-                intentCaptura.putExtra(MediaStore.EXTRA_OUTPUT,uri_img3);
-                startActivityForResult( intentCaptura, 2);
-            }
-        }
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -361,7 +301,6 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
                     e.printStackTrace();
                 }
 
-
                 Foto1View.setVisibility(View.VISIBLE);
                 view1.setVisibility(View.VISIBLE);
                 view1.setImageBitmap(bitmap);
@@ -369,9 +308,6 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
 
                 Foto2.setVisibility(View.VISIBLE);
                 espacio3.setVisibility(View.VISIBLE);
-
-                Foto3.setVisibility(View.VISIBLE);
-                espacio6.setVisibility(View.VISIBLE);
                 registrar1.setVisibility(View.VISIBLE);
 
             }
@@ -392,145 +328,16 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
                     e.printStackTrace();
                 }
 
-
                 Foto2View.setVisibility(View.VISIBLE);
                 view2.setVisibility(View.VISIBLE);
                 view2.setImageBitmap(bitmap2);
                 espacio4.setVisibility(View.VISIBLE);
 
             }
-            if (requestCode == 2) {
-
-                Bitmap bitmap3 = BitmapFactory.decodeFile(getApplicationContext().getExternalFilesDir(null) + "/"+nombreImagen3);
-
-                bitmap3 = DetectarPlaca.fechaHoraFoto(bitmap3);
-
-                FileOutputStream fos = null;
-
-                try {
-                    fos = new FileOutputStream(rutaImagen3);
-                    bitmap3.compress(Bitmap.CompressFormat.JPEG, 100, fos); // compress and save as JPEG
-                    fos.flush();
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-                Foto3View.setVisibility(View.VISIBLE);
-                view3.setVisibility(View.VISIBLE);
-                view3.setImageBitmap(bitmap3);
-                espacio7.setVisibility(View.VISIBLE);
-
-            }
-
 
 
         }
     }
-
-
-    public void busqueda() {
-        if(clave_e.getText().toString().equals("") ){
-            Toast.makeText(getApplicationContext(),"Campo Vació", Toast.LENGTH_SHORT).show();
-        }else if(clave_e.getText().toString().equals(" ") ){
-            Toast.makeText(getApplicationContext(),"Campo Vació", Toast.LENGTH_SHORT).show();
-        }else{
-
-            String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/trabajador_2.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-
-                @Override
-                public void onResponse(String response) {
-
-                    if (response.equals("error")) {
-
-                        id();
-
-                    } else {
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(RegTrabActivity.this);
-                        alertDialogBuilder.setTitle("Alerta");
-                        alertDialogBuilder
-                                .setMessage("Ya existe un trabajo registrado")
-                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        registro.setVisibility(View.GONE);
-
-                                    }
-                                }).create().show();
-
-                    }
-                }
-
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("TAG", "Error: " + error.toString());
-
-                }
-            }) {
-
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-
-                    Map<String, String> params = new HashMap<>();
-                    params.put("id_residencial", Conf.getResid().trim());
-                    params.put("clave_elector", clave_e.getText().toString().trim());
-
-                    return params;
-                }
-            };
-            requestQueue.add(stringRequest);
-        }
-    }
-
-
-    public void id() {
-        String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/trabajador_3.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-
-                @Override
-                public void onResponse(String response) {
-
-                    response = response.replace("][", ",");
-                    if (response.length() > 0) {
-                        try {
-                            registro.setVisibility(View.VISIBLE);
-                            ja3 = new JSONArray(response);
-                            n_t=Integer.parseInt(ja3.getString(0))+1;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                   // Log.e("TAG", "LINKOM ST response response:"+response);
-                   // Log.e("TAG", "LINKOM ST response total:"+ n_t);
-
-
-                }
-
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("TAG", "Error: " + error.toString());
-
-                }
-            }) {
-
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-
-                    Map<String, String> params = new HashMap<>();
-                    params.put("id_residencial", Conf.getResid().trim());
-
-                    return params;
-                }
-            };
-            requestQueue.add(stringRequest);
-    }
-
 
 
     public void Tipo() {
@@ -575,7 +382,7 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
 
     public void traeDepartamento() {
 
-        String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/trabajador_4.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
+        String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/reg_traba1.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
 
@@ -670,7 +477,6 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
                 .setMessage("¿ Desea registrar al trabajador ?")
                 .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
                         pd.show();
                         traeDepartamento2();
                     }
@@ -679,8 +485,8 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                         //Intent i = new Intent(getApplicationContext(), RegTrabActivity.class);
-                       // startActivity(i);
-                       // finish();
+                        // startActivity(i);
+                        // finish();
 
                     }
                 }).create().show();
@@ -689,8 +495,8 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
     public void traeDepartamento2() {
 
         if (Tipo.getSelectedItem().toString().equals("Seleccionar...") || Departamento.getSelectedItem().toString().equals("Seleccionar...")) {
-            pd.dismiss();
 
+            pd.dismiss();
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(RegTrabActivity.this);
             alertDialogBuilder.setTitle("Alerta");
             alertDialogBuilder
@@ -702,7 +508,6 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
                     }).create().show();
         } else if(nombre.getText().toString().equals("") || nombre.getText().toString().equals(" ")){
             pd.dismiss();
-
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(RegTrabActivity.this);
             alertDialogBuilder.setTitle("Alerta");
             alertDialogBuilder
@@ -713,7 +518,7 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
                         }
                     }).create().show();
         } else {
-            String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/trabajador_5.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
+            String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/reg_traba2.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
 
@@ -734,8 +539,6 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    pd.dismiss();
-
                     Log.e("TAG", "Error: " + error.toString());
                 }
             }) {
@@ -755,8 +558,7 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
     }
 
     public void Registro() {
-
-        String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/trabajador_6.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
+        String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/reg_traba3.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
 
@@ -766,9 +568,7 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
 
 
                 if(response.equals("error")){
-
                     pd.dismiss();
-
 
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(RegTrabActivity.this);
                     alertDialogBuilder.setTitle("Alerta");
@@ -776,7 +576,7 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
                             .setMessage("Registro No Exitoso")
                             .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    Intent i = new Intent(getApplicationContext(), RegTrab2Activity.class);
+                                    Intent i = new Intent(getApplicationContext(), mx.linkom.caseta_los_cabos.RegTrab2Activity.class);
                                     startActivity(i);
                                     finish();
                                 }
@@ -786,29 +586,28 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
                 }else {
 
                     if (Global_info.getCantidadFotosEnEsperaEnSegundoPlano(RegTrabActivity.this) >= Global_info.getLimiteFotosSegundoPlano()){
-                        if(foto1==1){
+                        if(foto==1){
                             upload1();
-                        }
-                        if(foto2==2){
+                        }else if(foto==2){
+                            upload1();
                             upload2();
                         }
-                        if(foto3==3){
-                            upload3();
-                        }
                     }else {
-                        if(foto1==1){
+                        if(foto==1){
                             ContentValues val_img1 = ValuesImagen(nombreImagen1, Conf.getPin() + "/trabajadores/" + nombreImagen1.trim(), rutaImagen1);
                             Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
-                        }
-                        if(foto2==2){
-                            ContentValues val_img1 = ValuesImagen(nombreImagen2, Conf.getPin() + "/trabajadores/" + nombreImagen2.trim(), rutaImagen2);
+                            //upload1();
+                        }else if(foto==2){
+                            ContentValues val_img1 = ValuesImagen(nombreImagen1, Conf.getPin() + "/trabajadores/" + nombreImagen1.trim(), rutaImagen1);
                             Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
-                        }
-                        if(foto3==3){
-                            ContentValues val_img1 = ValuesImagen(nombreImagen3, Conf.getPin() + "/trabajadores/" + nombreImagen3.trim(), rutaImagen3);
-                            Uri uri = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img1);
+                            //upload1();
+                            ContentValues val_img2 = ValuesImagen(nombreImagen2, Conf.getPin() + "/trabajadores/" + nombreImagen2.trim(), rutaImagen2);
+                            Uri uri2 = getContentResolver().insert(UrisContentProvider.URI_CONTENIDO_FOTOS_OFFLINE, val_img2);
+                            //upload2();
                         }
                     }
+
+
 
                     Finalizar();
                 }
@@ -824,6 +623,7 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
 
+
                 params.put("id_residencial", Conf.getResid().trim());
                 try {
                     params.put("tipo", Tipo.getSelectedItem().toString());
@@ -832,17 +632,14 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
                     e.printStackTrace();
                 }
                 params.put("nombre", nombre.getText().toString().trim());
-                params.put("puesto", puesto.getText().toString().trim());
-                params.put("direccion", direccion.getText().toString().trim());
+                params.put("tag", tag.getText().toString().trim());
                 params.put("telefono", telefono.getText().toString().trim());
                 params.put("correo", correo.getText().toString().trim());
                 params.put("comentarios", comentarios.getText().toString().trim());
                 params.put("foto1", nombreImagen1);
                 params.put("foto2", nombreImagen2);
-                params.put("foto3", nombreImagen3);
-                params.put("id_trabajador", String.valueOf(n_t));
 
-                params.put("clave_elector", clave_e.getText().toString().trim());
+                params.put("numero_ine", numeroIne);
 
 
                 return params;
@@ -863,10 +660,8 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
 
     public void upload1() {
 
-        Log.e("upload", "upload1()");
-
         StorageReference mountainImagesRef = null;
-        mountainImagesRef = storageReference.child(Conf.getPin() + "/caseta/" + nombreImagen1);
+        mountainImagesRef = storageReference.child(Conf.getPin() + "/trabajadores/" + nombreImagen1);
 
         Uri uri  = Uri.fromFile(new File(rutaImagen1));
         UploadTask uploadTask = mountainImagesRef.putFile(uri);
@@ -904,7 +699,7 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
     public void upload2() {
 
         StorageReference mountainImagesRef2 = null;
-        mountainImagesRef2 = storageReference.child(Conf.getPin() + "/caseta/" + nombreImagen2);
+        mountainImagesRef2 = storageReference.child(Conf.getPin() + "/trabajadores/" + nombreImagen2);
 
         Uri uri  = Uri.fromFile(new File(rutaImagen2));
         UploadTask uploadTask = mountainImagesRef2.putFile(uri);
@@ -935,46 +730,6 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 eliminarFotoDirectorioLocal(nombreImagen2);
                 pd3.dismiss();
-            }
-        });
-
-
-    }
-
-    public void upload3() {
-
-        StorageReference mountainImagesRef3 = null;
-        mountainImagesRef3 = storageReference.child(Conf.getPin() + "/caseta/" + nombreImagen3);
-
-        Uri uri  = Uri.fromFile(new File(rutaImagen3));
-        UploadTask uploadTask = mountainImagesRef3.putFile(uri);
-
-        // Listen for state changes, errors, and completion of the upload.
-        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                //System.out.println("Upload is " + progress + "% done");
-                //Toast.makeText(getApplicationContext(),"Cargando Imagen PLACA " + progress + "%", Toast.LENGTH_SHORT).show();
-                pd4.show();
-            }
-        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
-                //Toast.makeText(AccesoActivity.this,"Pausado",Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(RegTrabActivity.this, "Fallado", Toast.LENGTH_SHORT).show();
-                pd4.dismiss();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                eliminarFotoDirectorioLocal(nombreImagen3);
-                pd4.dismiss();
-
             }
         });
 
@@ -1033,7 +788,7 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
                 .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        Intent i = new Intent(getApplicationContext(), RegTrab2Activity.class);
+                        Intent i = new Intent(getApplicationContext(), mx.linkom.caseta_los_cabos.RegTrab2Activity.class);
                         startActivity(i);
                         finish();
                     }
@@ -1056,7 +811,7 @@ public class RegTrabActivity extends mx.linkom.caseta_los_cabos.Menu {
     @Override
     public void onBackPressed(){
         super.onBackPressed();
-        Intent intent = new Intent(getApplicationContext(), RegTrab2Activity.class);
+        Intent intent = new Intent(getApplicationContext(), mx.linkom.caseta_los_cabos.RegTrab2Activity.class);
         startActivity(intent);
         finish();
     }
