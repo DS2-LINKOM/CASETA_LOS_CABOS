@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.text.InputFilter;
@@ -121,6 +122,7 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
     private ImageButton btnMicrofonoComentarios;
     private static final int TXT_COMENTARIOS = 200;
 
+    private int btnRegistrarPresionado = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -337,28 +339,75 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
         reg1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Verificar();
+
+
+                reg1.setEnabled(false);
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+
+                        btnRegistrarPresionado = 1;
+                        botonPresionado(0);
+                        Verificar();
+                    }
+                }, 300);
+
+
             }
         });
 
         reg2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Verificar();
+
+                reg2.setEnabled(false);
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        btnRegistrarPresionado = 2;
+                        botonPresionado(0);
+                        Verificar();
+                    }
+                }, 300);
             }
         });
 
         reg3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Verificar();
+
+                reg3.setEnabled(false);
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        btnRegistrarPresionado = 3;
+                        botonPresionado(0);
+                        Verificar();
+                    }
+                }, 300);
+
             }
         });
 
         reg4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Verificar();
+
+
+                reg4.setEnabled(false);
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        btnRegistrarPresionado = 4;
+                        botonPresionado(0);
+                        Verificar();
+                    }
+                }, 300);
+
             }
         });
 
@@ -1471,7 +1520,12 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
                             }
                         }*/
                     }
-                }).create().show();
+                }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        botonPresionado(1);
+                    }
+                }).setCancelable(false).create().show();
     }
 
     public void numerosOffline(final String IdUsu) {
@@ -2077,18 +2131,23 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
 
         if ((Placas.getText().toString().equals("") && si.isChecked() && !Global.getFotoPlaca()) || (Global.getFotoPlaca() && editTextPlacasPorFoto.getText().toString().equals("") && !Conf.getTipoReg().equals("Peatonal"))) {
             pd.dismiss();
+            botonPresionado(1);
 
             Toast.makeText(getApplicationContext(), "Campo de placas", Toast.LENGTH_SHORT).show();
         } else if ((Placas.getText().toString().equals(" ") && si.isChecked() && !Global.getFotoPlaca()) || (Global.getFotoPlaca() && editTextPlacasPorFoto.getText().toString().equals(" "))) {
             pd.dismiss();
+            botonPresionado(1);
 
             Toast.makeText(getApplicationContext(), "Campo de placas ", Toast.LENGTH_SHORT).show();
         } else if ((Placas.getText().toString().equals("N/A") && si.isChecked() && !Global.getFotoPlaca()) || (Global.getFotoPlaca() && editTextPlacasPorFoto.getText().toString().equals("N/A"))) {
             pd.dismiss();
+            botonPresionado(1);
 
             Toast.makeText(getApplicationContext(), "Campo de placas", Toast.LENGTH_SHORT).show();
         } else if (ja3.getString(9).trim().equals("1") && BitmapFactory.decodeFile(getApplicationContext().getExternalFilesDir(null) + "/" + nombreImagenPlaca) == null) {
             pd.dismiss();
+            botonPresionado(1);
+
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AccesoRegistroActivity.this);
             alertDialogBuilder.setTitle("Alerta");
             alertDialogBuilder
@@ -2099,6 +2158,8 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
                         }
                     }).create().show();
         } else if (Calle.getSelectedItem().equals("Seleccionar..") || Calle.getSelectedItem().equals("Seleccionar...") || Numero.getSelectedItem().equals("Seleccionar...")) {
+            botonPresionado(1);
+
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AccesoRegistroActivity.this);
             alertDialogBuilder.setTitle("Alerta");
             alertDialogBuilder
@@ -2119,6 +2180,8 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
 
                     if (response.equals("error")) {
                         pd.dismiss();
+                        botonPresionado(1);
+
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AccesoRegistroActivity.this);
                         alertDialogBuilder.setTitle("Alerta");
                         alertDialogBuilder
@@ -2200,6 +2263,8 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
                 public void onErrorResponse(VolleyError error) {
                     pd.dismiss();
                     Log.e("TAG", "Error: " + error.toString());
+                    botonPresionado(1);
+                    alertaErrorAlRegistrar("Error al registrar visita \n\nNo se ha podido establecer comunicación con el servidor, inténtelo de nuevo");
                 }
             }) {
                 @Override
@@ -2216,7 +2281,7 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
 
                     String placas = "";
 
-                    if (Global.getFotoPlaca()) {
+                    if (Global.getFotoPlaca() && !Conf.getTipoReg().equals("Peatonal")) {
                         placas = editTextPlacasPorFoto.getText().toString().trim();
                     } else {
                         placas = Placas.getText().toString().trim();
@@ -2522,6 +2587,51 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
             }
         }
         return false;
+    }
+
+    public void botonPresionado(int estado){
+        //estado --> 0=presionado   1=restablecer
+
+        Button button = reg1;
+
+        switch (btnRegistrarPresionado){
+            case 1:
+                button = reg1;
+                break;
+            case 2:
+                button = reg2;
+                break;
+            case 3:
+                button = reg3;
+                break;
+            case 4:
+                button = reg4;
+                break;
+            default:
+                break;
+        }
+
+        if (estado == 0){
+            button.setBackgroundResource(R.drawable.btn_presionado);
+            button.setTextColor(0xFF5A6C81);
+        }else if (estado == 1){
+            button.setBackgroundResource(R.drawable.ripple_effect);
+            button.setTextColor(0xFF27374A);
+            button.setEnabled(true);
+        }
+    }
+
+    public void alertaErrorAlRegistrar(String texto){
+        pd.dismiss();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AccesoRegistroActivity.this);
+        alertDialogBuilder.setTitle("Alerta");
+        alertDialogBuilder
+                .setMessage(texto)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                }).create().show();
     }
 
     @Override

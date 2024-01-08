@@ -3,6 +3,7 @@ package mx.linkom.caseta_los_cabos;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -68,7 +69,15 @@ public class AccesosTrabajadorActivity extends mx.linkom.caseta_los_cabos.Menu {
         Registrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Registrar();
+                Registrar.setEnabled(false);
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        botonPresionado(0);
+                        Registrar();
+                    }
+                }, 300);
             }
         });
 
@@ -303,6 +312,8 @@ public class AccesosTrabajadorActivity extends mx.linkom.caseta_los_cabos.Menu {
 
 
                 if(response.equals("error")){
+                    botonPresionado(1);
+
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AccesosTrabajadorActivity.this);
                     alertDialogBuilder.setTitle("Alerta");
                     alertDialogBuilder
@@ -332,6 +343,8 @@ public class AccesosTrabajadorActivity extends mx.linkom.caseta_los_cabos.Menu {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("TAG","Error: " + error.toString());
+                botonPresionado(1);
+                alertaErrorAlRegistrar("Error al registrar visita \n\nNo se ha podido establecer comunicación con el servidor, inténtelo de nuevo");
             }
         }){
             @Override
@@ -352,6 +365,32 @@ public class AccesosTrabajadorActivity extends mx.linkom.caseta_los_cabos.Menu {
         requestQueue.add(stringRequest);
     }
 
+    public void botonPresionado(int estado){
+        //estado --> 0=presionado   1=restablecer
+
+        Button button = Registrar;
+
+        if (estado == 0){
+            button.setBackgroundResource(R.drawable.btn_presionado);
+            button.setTextColor(0xFF5A6C81);
+        }else if (estado == 1){
+            button.setBackgroundResource(R.drawable.ripple_effect);
+            button.setTextColor(0xFF27374A);
+            button.setEnabled(true);
+        }
+    }
+
+    public void alertaErrorAlRegistrar(String texto){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AccesosTrabajadorActivity.this);
+        alertDialogBuilder.setTitle("Alerta");
+        alertDialogBuilder
+                .setMessage(texto)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                }).create().show();
+    }
 
     @Override
     public void onBackPressed(){
