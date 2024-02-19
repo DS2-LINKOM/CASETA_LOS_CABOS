@@ -2144,19 +2144,6 @@ public class AccesoRegistroActivity extends mx.linkom.caseta_los_cabos.Menu {
             botonPresionado(1);
 
             Toast.makeText(getApplicationContext(), "Campo de placas", Toast.LENGTH_SHORT).show();
-        } else if (ja3.getString(9).trim().equals("1") && BitmapFactory.decodeFile(getApplicationContext().getExternalFilesDir(null) + "/" + nombreImagenPlaca) == null) {
-            pd.dismiss();
-            botonPresionado(1);
-
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AccesoRegistroActivity.this);
-            alertDialogBuilder.setTitle("Alerta");
-            alertDialogBuilder
-                    .setMessage("No tomo fotografía de placa.")
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
-                    }).create().show();
         } else if (Calle.getSelectedItem().equals("Seleccionar..") || Calle.getSelectedItem().equals("Seleccionar...") || Numero.getSelectedItem().equals("Seleccionar...")) {
             botonPresionado(1);
 

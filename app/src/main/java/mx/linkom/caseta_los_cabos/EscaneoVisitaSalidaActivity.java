@@ -20,10 +20,13 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.webkit.URLUtil;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -51,7 +54,9 @@ import org.json.JSONException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -88,8 +93,10 @@ public class EscaneoVisitaSalidaActivity extends mx.linkom.caseta_los_cabos.Menu
     String rutaImagenPlaca, nombreImagenPlaca;
     Uri uri_img;
     boolean modeloCargado=false;
-    JSONArray ja5,ja6;
+    JSONArray ja5,ja6,ja7;
 
+    Spinner spinnerPlacas;
+    ArrayList<String> arrayPlacas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +122,11 @@ public class EscaneoVisitaSalidaActivity extends mx.linkom.caseta_los_cabos.Menu
         FotoPlacaView = (LinearLayout) findViewById(R.id.FotoPlacaView);
         btnFotoPlaca = (Button) findViewById(R.id.btnFotoPlaca);
         viewPlaca = (ImageView) findViewById(R.id.viewPlaca);
+
+        spinnerPlacas = (Spinner) findViewById(R.id.spinerPlacasParaSalidas);
+        spinnerPlacas.setEnabled(false);
+        arrayPlacas = new ArrayList<String>();
+        Global.setBuscarPorPlaca(false);
 
         /*iconoInternet = (ImageView) findViewById(R.id.iconoInternetEscaneoVisitaSalidas);
 
@@ -219,6 +231,7 @@ public class EscaneoVisitaSalidaActivity extends mx.linkom.caseta_los_cabos.Menu
         rlOtro.setVisibility(View.VISIBLE);
 
 
+        buscarPlacas();
 
 
     }
@@ -294,6 +307,100 @@ public class EscaneoVisitaSalidaActivity extends mx.linkom.caseta_los_cabos.Menu
     int anio = fecha.get(Calendar.YEAR);
     int mes = fecha.get(Calendar.MONTH) + 1;
     int dia = fecha.get(Calendar.DAY_OF_MONTH);
+
+    private void buscarPlacas() {
+        String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/placasHoy.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                response = response.replace("][", ",");
+                Log.e("Placas", response);
+
+                if (response.length() > 0) {
+                    try {
+                        ja7 = new JSONArray(response);
+                        cargarSpinner();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("TAG", "Error: " + error.toString());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id_residencial", Conf.getResid());
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void cargarSpinner(){
+
+
+        try{
+            for (int i=0;i<ja7.length();i+=1){
+                arrayPlacas.add(ja7.getString(i+0));
+            }
+
+            Collections.sort(arrayPlacas);
+
+            if (ja7.length() > 0){
+                spinnerPlacas.setEnabled(true);
+                arrayPlacas.add(0,"Seleccionar..");
+                arrayPlacas.add(1,"Seleccionar...");
+            }else {
+                arrayPlacas.add(0,"No se econtraron placas");
+            }
+
+
+            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,arrayPlacas);
+            spinnerPlacas.setAdapter(adapter1);
+            spinnerPlacas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    if(spinnerPlacas.getSelectedItem().equals("Seleccionar..")){
+                        arrayPlacas.remove(0);
+                    }else if(spinnerPlacas.getSelectedItem().equals("Seleccionar...")){
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(EscaneoVisitaSalidaActivity.this);
+                        alertDialogBuilder.setTitle("Alerta");
+                        alertDialogBuilder
+                                .setMessage("No selecciono ninguna placa...")
+                                .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                    }
+                                }).create().show();
+                    }else{
+                        Log.e("CALLE", spinnerPlacas.getSelectedItem().toString());
+
+                        placas.setText(spinnerPlacas.getSelectedItem().toString());
+
+                        if (spinnerPlacas.getSelectedItem().toString() != "No se econtraron placas" ){
+                            placas();
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     public void menu() {
         String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/menu.php?bd_name="+Conf.getBd()+"&bd_user="+Conf.getBdUsu()+"&bd_pwd="+Conf.getBdCon();
@@ -734,6 +841,7 @@ public class EscaneoVisitaSalidaActivity extends mx.linkom.caseta_los_cabos.Menu
 
                             try {
                                 ja1 = new JSONArray(response);
+                                Conf.setPlacas(placas.getText().toString().trim());
                                 placas2(ja1.getString(2));
                             } catch (JSONException e) {
                                // placas.setText("");
@@ -854,18 +962,21 @@ public class EscaneoVisitaSalidaActivity extends mx.linkom.caseta_los_cabos.Menu
                          if(ja2.getString(5).equals("2") ){
                             Conf.setST("Aceptado");
                             Conf.setQR(ja2.getString(12));
+                             Global.setBuscarPorPlaca(true);
                             Intent i = new Intent(getApplicationContext(), AccesosMultiplesSalidasActivity.class);
                             startActivity(i);
                             finish();
                         }else if(palabra.equals("M")){
                             Conf.setST("Aceptado");
                             Conf.setQR(ja2.getString(12));
+                             Global.setBuscarPorPlaca(true);
                             Intent i = new Intent(getApplicationContext(), AccesosMultiplesSalidasActivity.class);
                             startActivity(i);
                             finish();
                         }else{
                             Conf.setST("Aceptado");
                             Conf.setQR(ja2.getString(12));
+                             Global.setBuscarPorPlaca(true);
                             Intent i = new Intent(getApplicationContext(), AccesosSalidasActivity.class);
                             startActivity(i);
                             finish();

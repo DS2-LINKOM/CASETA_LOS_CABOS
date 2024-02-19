@@ -301,7 +301,7 @@ public class AccesosGrupalActivity extends mx.linkom.caseta_los_cabos.Menu {
         } else {
             Placas.setFilters(new InputFilter[]{filter, new InputFilter.AllCaps() {
             }});
-            Placas.setText(Conf.getPlacas().trim());
+            //Placas.setText(Conf.getPlacas().trim());
             CPlacasTexto.setVisibility(View.VISIBLE);
         }
 

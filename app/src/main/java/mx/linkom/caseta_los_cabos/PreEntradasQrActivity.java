@@ -2255,19 +2255,7 @@ public class PreEntradasQrActivity extends mx.linkom.caseta_los_cabos.Menu {
             botonPresionado(1);
 
             Toast.makeText(getApplicationContext(), "Campo de placas", Toast.LENGTH_SHORT).show();
-        } else if (ja6.getString(9).trim().equals("1") && BitmapFactory.decodeFile(getApplicationContext().getExternalFilesDir(null) + "/"+nombreImagenPlaca) == null){
-            pd.dismiss();
-            botonPresionado(1);
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PreEntradasQrActivity.this);
-            alertDialogBuilder.setTitle("Alerta");
-            alertDialogBuilder
-                    .setMessage("No tomo fotografía de placa.")
-                    .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
-                    }).create().show();
-        }else {
+        } else {
 
             String URL = "https://communitycabo.sist.com.mx/plataforma/casetaV2/controlador/LOS_CABOS/vst_php5_2.php?bd_name=" + Conf.getBd() + "&bd_user=" + Conf.getBdUsu() + "&bd_pwd=" + Conf.getBdCon();
             RequestQueue requestQueue = Volley.newRequestQueue(this);
